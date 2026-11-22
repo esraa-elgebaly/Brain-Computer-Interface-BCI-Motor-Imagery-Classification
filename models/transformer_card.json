@@ -1,0 +1,85 @@
+{
+  "model_class": "EEGTransformer",
+  "tf_cfg": {
+    "seed": 42,
+    "decimate": 2,
+    "crop_seconds": 7.0,
+    "test_crops": 5,
+    "conv_filters": 32,
+    "temporal_kernel": 13,
+    "pool": 38,
+    "pool_stride": 8,
+    "d_model": 64,
+    "n_heads": 4,
+    "n_layers": 3,
+    "ff_mult": 2,
+    "dropout": 0.3,
+    "epochs": 80,
+    "batch_size": 64,
+    "lr": 0.001,
+    "weight_decay": 0.01,
+    "warmup_epochs": 5,
+    "label_smoothing": 0.1,
+    "patience": 15,
+    "val_share": 0.15,
+    "noise_std": 0.05,
+    "scale_range": [
+      0.9,
+      1.1
+    ],
+    "run_sanity_check": true,
+    "fs": 125,
+    "crop_len": 875
+  },
+  "n_channels": 4,
+  "preprocessing": {
+    "fs": 250,
+    "channels": [
+      "FZ",
+      "C3",
+      "CZ",
+      "C4"
+    ],
+    "bandpass_hz": [
+      0.5,
+      40
+    ],
+    "notch_hz": 50,
+    "notch_q": 30,
+    "epoch_seconds": [
+      1.0,
+      9.0
+    ],
+    "car": true,
+    "input": "epochs_CAR (section 8)",
+    "then": "prep_for_transformer: decimate + per-trial channel z-score"
+  },
+  "label_map": {
+    "LEFT": 0,
+    "RIGHT": 1
+  },
+  "cv": {
+    "folds": 5,
+    "grouping": "recording session",
+    "data": "dev split",
+    "accuracy_mean": 0.47998079443193814,
+    "balanced_acc_mean": 0.4777933778003818,
+    "f1_mean": 0.41944960861875236,
+    "auc_mean": 0.46566068279308304,
+    "accuracy_std": 0.028291832433082687,
+    "balanced_acc_std": 0.029413215458424454,
+    "f1_std": 0.1900203077550446,
+    "auc_std": 0.03200357065532146
+  },
+  "test": {
+    "accuracy": 0.5232558139534884,
+    "balanced_acc": 0.5324218221199404,
+    "f1": 0.616822429906542,
+    "auc": 0.5468390415594964,
+    "n": 344
+  },
+  "trained_on": 1487,
+  "epochs": 10,
+  "torch_version": "2.14.1+cpu",
+  "created": "2026-11-22T22:17:04"
+}
