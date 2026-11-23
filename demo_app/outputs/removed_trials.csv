@@ -1,0 +1,270 @@
+filename,label,reason,peak_to_peak,std,flat_share
+cellula_MI_data_64.csv,LEFT,peaks + too big,9157.874,879.174,0.0
+cellula_MI_data_93.csv,RIGHT,flat,4980.735,626.283,0.117
+cellula_MI_data_119.csv,LEFT,peaks + too big,8683.087,869.087,0.0
+cellula_MI_data_136.csv,RIGHT,peaks + too big,9230.335,817.7,0.0
+cellula_MI_data_163.csv,RIGHT,too big,7540.88,1029.722,0.0
+cellula_MI_data_184.csv,LEFT,peaks + too big,12292.506,1427.075,0.0
+cellula_MI_data_226.csv,RIGHT,peaks + too big,10050.914,906.642,0.0
+cellula_MI_data_244.csv,RIGHT,peaks + too big,16865.889,1543.572,0.0
+cellula_MI_data_245.csv,LEFT,peaks + too big,29389.522,2318.334,0.0
+cellula_MI_data_247.csv,RIGHT,flat,1799.189,125.874,0.2
+cellula_MI_data_281.csv,LEFT,peaks,10856.278,796.009,0.03
+cellula_MI_data_290.csv,LEFT,peaks + too big,11595.307,836.156,0.079
+cellula_MI_data_293.csv,LEFT,peaks + too big,9651.259,824.139,0.038
+cellula_MI_data_295.csv,RIGHT,peaks + too big,10401.089,1015.501,0.069
+cellula_MI_data_298.csv,LEFT,too big + flat,6076.589,1053.696,0.729
+cellula_MI_data_299.csv,RIGHT,too big + flat,5152.087,952.235,0.724
+cellula_MI_data_300.csv,RIGHT,too big + flat,5328.06,926.725,0.756
+cellula_MI_data_301.csv,RIGHT,too big + flat,5816.18,1084.064,0.728
+cellula_MI_data_302.csv,RIGHT,too big + flat,6237.681,1271.826,0.764
+cellula_MI_data_303.csv,RIGHT,too big + flat,5087.178,1150.63,0.745
+cellula_MI_data_304.csv,LEFT,too big + flat,4999.979,1170.828,0.723
+cellula_MI_data_305.csv,RIGHT,too big + flat,6303.128,1132.963,0.745
+cellula_MI_data_306.csv,LEFT,too big + flat,5055.949,1099.285,0.754
+cellula_MI_data_323.csv,RIGHT,peaks,11605.092,326.316,0.004
+cellula_MI_data_325.csv,RIGHT,peaks + too big,19337.784,2003.292,0.0
+cellula_MI_data_328.csv,RIGHT,peaks,11538.353,493.297,0.017
+cellula_MI_data_329.csv,RIGHT,peaks,12644.423,464.25,0.007
+cellula_MI_data_330.csv,LEFT,peaks,8529.592,375.335,0.001
+cellula_MI_data_340.csv,LEFT,peaks,8655.842,397.435,0.002
+cellula_MI_data_347.csv,LEFT,peaks,11022.811,519.308,0.01
+cellula_MI_data_348.csv,RIGHT,peaks,13332.495,410.078,0.004
+cellula_MI_data_361.csv,LEFT,peaks + too big,9899.336,1144.84,0.0
+cellula_MI_data_461.csv,RIGHT,peaks + too big,8720.461,1324.455,0.0
+cellula_MI_data_463.csv,RIGHT,peaks + too big,9670.106,1821.24,0.0
+cellula_MI_data_464.csv,RIGHT,peaks + too big,13714.178,2008.157,0.0
+cellula_MI_data_465.csv,RIGHT,too big,7861.192,1065.039,0.0
+cellula_MI_data_466.csv,RIGHT,peaks + too big,13310.505,2241.121,0.0
+cellula_MI_data_467.csv,RIGHT,peaks + too big,9372.626,1918.291,0.0
+cellula_MI_data_468.csv,RIGHT,peaks + too big,16391.434,2696.794,0.0
+cellula_MI_data_469.csv,LEFT,peaks + too big,16433.5,1652.89,0.0
+cellula_MI_data_470.csv,LEFT,too big,7554.036,1093.336,0.0
+cellula_MI_data_472.csv,RIGHT,too big,7553.657,923.039,0.0
+cellula_MI_data_474.csv,RIGHT,peaks + too big,19165.857,2733.543,0.0
+cellula_MI_data_477.csv,LEFT,peaks + too big,10771.081,1949.521,0.0
+cellula_MI_data_478.csv,RIGHT,peaks + too big,17396.288,1875.315,0.0
+cellula_MI_data_482.csv,LEFT,peaks + too big,18508.942,2132.674,0.0
+cellula_MI_data_483.csv,LEFT,peaks + too big,14796.732,1616.44,0.0
+cellula_MI_data_484.csv,RIGHT,too big,5234.423,895.799,0.0
+cellula_MI_data_485.csv,RIGHT,too big,4732.415,885.835,0.0
+cellula_MI_data_486.csv,LEFT,too big,5115.055,893.476,0.0
+cellula_MI_data_487.csv,RIGHT,peaks + too big,22870.632,2880.098,0.0
+cellula_MI_data_488.csv,RIGHT,peaks + too big,18044.926,3405.959,0.0
+cellula_MI_data_489.csv,LEFT,peaks + too big,56758.114,9072.703,0.0
+cellula_MI_data_490.csv,LEFT,peaks + too big,8469.165,1114.649,0.0
+cellula_MI_data_491.csv,RIGHT,peaks + too big,72337.667,9235.254,0.0
+cellula_MI_data_492.csv,LEFT,too big,5909.066,946.843,0.0
+cellula_MI_data_493.csv,LEFT,peaks + too big,9124.758,1694.853,0.0
+cellula_MI_data_494.csv,LEFT,peaks + too big,12921.577,2725.74,0.0
+cellula_MI_data_495.csv,RIGHT,peaks + too big,33892.34,4686.456,0.0
+cellula_MI_data_496.csv,LEFT,peaks + too big,38217.299,5531.804,0.0
+cellula_MI_data_498.csv,LEFT,peaks + too big,12325.963,1625.518,0.0
+cellula_MI_data_500.csv,RIGHT,peaks + too big,21924.21,3210.316,0.0
+cellula_MI_data_502.csv,LEFT,peaks + too big,29676.661,2947.8,0.0
+cellula_MI_data_504.csv,LEFT,peaks + too big,19324.639,2994.499,0.0
+cellula_MI_data_505.csv,LEFT,flat,4709.431,414.208,0.709
+cellula_MI_data_506.csv,LEFT,flat,2922.134,453.323,0.715
+cellula_MI_data_507.csv,LEFT,flat,2408.061,391.483,0.469
+cellula_MI_data_508.csv,LEFT,flat,2645.628,460.552,0.51
+cellula_MI_data_509.csv,LEFT,flat,2366.895,422.592,0.595
+cellula_MI_data_510.csv,LEFT,flat,2067.18,327.838,0.405
+cellula_MI_data_511.csv,RIGHT,flat,2525.412,287.323,0.405
+cellula_MI_data_512.csv,LEFT,flat,2483.951,373.972,0.321
+cellula_MI_data_513.csv,LEFT,flat,3022.505,551.483,0.662
+cellula_MI_data_514.csv,RIGHT,peaks + too big,10445.613,1844.101,0.0
+cellula_MI_data_515.csv,LEFT,peaks + too big,9782.452,1340.814,0.0
+cellula_MI_data_521.csv,LEFT,too big,5409.208,850.865,0.0
+cellula_MI_data_523.csv,LEFT,peaks + too big,9773.832,1189.425,0.0
+cellula_MI_data_528.csv,RIGHT,peaks + too big,12431.352,2104.135,0.0
+cellula_MI_data_534.csv,LEFT,too big,7820.293,1304.744,0.0
+cellula_MI_data_541.csv,LEFT,peaks + too big,9279.347,1596.397,0.0
+cellula_MI_data_543.csv,RIGHT,too big,5802.714,888.26,0.0
+cellula_MI_data_544.csv,LEFT,too big,5790.157,942.928,0.0
+cellula_MI_data_547.csv,RIGHT,too big,5914.289,1015.972,0.0
+cellula_MI_data_550.csv,RIGHT,peaks + too big,10062.197,1967.035,0.0
+cellula_MI_data_551.csv,LEFT,peaks + too big,8411.278,1783.822,0.0
+cellula_MI_data_552.csv,LEFT,peaks + too big,14705.586,1946.72,0.0
+cellula_MI_data_553.csv,RIGHT,too big,5220.73,816.466,0.0
+cellula_MI_data_556.csv,RIGHT,too big,6904.51,1064.222,0.0
+cellula_MI_data_557.csv,RIGHT,too big,5275.894,813.717,0.0
+cellula_MI_data_561.csv,LEFT,too big,7600.884,1166.557,0.0
+cellula_MI_data_564.csv,RIGHT,too big,6339.092,989.325,0.0
+cellula_MI_data_565.csv,LEFT,too big,5631.785,963.419,0.0
+cellula_MI_data_566.csv,RIGHT,too big,5480.798,812.645,0.0
+cellula_MI_data_567.csv,LEFT,too big,5910.381,882.172,0.0
+cellula_MI_data_568.csv,LEFT,peaks + too big,9960.739,1782.949,0.0
+cellula_MI_data_570.csv,RIGHT,too big,5576.965,946.777,0.005
+cellula_MI_data_571.csv,LEFT,peaks + too big + flat,58285.192,6698.142,0.155
+cellula_MI_data_572.csv,LEFT,peaks + too big + flat,66326.4,8745.952,0.443
+cellula_MI_data_573.csv,LEFT,peaks + too big + flat,75578.256,7932.907,0.477
+cellula_MI_data_574.csv,RIGHT,peaks + too big + flat,56048.307,7685.622,0.387
+cellula_MI_data_575.csv,RIGHT,peaks + too big + flat,63476.628,7355.674,0.241
+cellula_MI_data_577.csv,LEFT,peaks + too big,12787.603,1827.567,0.011
+cellula_MI_data_578.csv,LEFT,peaks + too big,54790.823,2872.132,0.011
+cellula_MI_data_580.csv,RIGHT,too big,5839.47,940.438,0.0
+cellula_MI_data_581.csv,LEFT,too big,6202.467,1092.001,0.0
+cellula_MI_data_582.csv,RIGHT,peaks + too big,55124.744,3998.054,0.043
+cellula_MI_data_583.csv,RIGHT,peaks + too big,15997.685,962.305,0.004
+cellula_MI_data_584.csv,RIGHT,too big,8371.012,1253.229,0.0
+cellula_MI_data_585.csv,LEFT,too big,5736.581,984.62,0.0
+cellula_MI_data_586.csv,RIGHT,too big,6703.217,1201.295,0.0
+cellula_MI_data_587.csv,RIGHT,too big,5829.739,1078.509,0.003
+cellula_MI_data_588.csv,LEFT,too big,7188.714,1259.642,0.0
+cellula_MI_data_590.csv,RIGHT,peaks + too big + flat,42799.131,6923.027,0.23
+cellula_MI_data_591.csv,RIGHT,peaks + too big + flat,59979.557,9622.054,0.415
+cellula_MI_data_592.csv,LEFT,too big,6585.011,1215.342,0.0
+cellula_MI_data_594.csv,LEFT,peaks + too big,52015.024,1820.667,0.007
+cellula_MI_data_595.csv,LEFT,too big,7833.367,1270.127,0.0
+cellula_MI_data_596.csv,RIGHT,too big,6385.823,1001.906,0.0
+cellula_MI_data_597.csv,RIGHT,too big,4803.832,822.001,0.0
+cellula_MI_data_599.csv,LEFT,too big,5638.167,816.194,0.0
+cellula_MI_data_600.csv,RIGHT,peaks + too big,51384.924,8397.235,0.0
+cellula_MI_data_601.csv,LEFT,peaks + too big,19281.513,2479.485,0.0
+cellula_MI_data_602.csv,LEFT,too big,6563.205,1127.151,0.0
+cellula_MI_data_603.csv,RIGHT,peaks + too big,10261.659,1685.434,0.0
+cellula_MI_data_604.csv,RIGHT,flat,2982.439,514.192,0.727
+cellula_MI_data_605.csv,RIGHT,flat,2471.475,502.087,0.528
+cellula_MI_data_606.csv,LEFT,flat,3858.052,640.044,0.766
+cellula_MI_data_607.csv,RIGHT,flat,2617.087,509.679,0.635
+cellula_MI_data_608.csv,LEFT,flat,3209.375,521.568,0.494
+cellula_MI_data_609.csv,RIGHT,flat,3474.932,733.829,0.549
+cellula_MI_data_610.csv,RIGHT,flat,3312.059,603.101,0.571
+cellula_MI_data_611.csv,LEFT,flat,3794.377,618.252,0.532
+cellula_MI_data_612.csv,LEFT,flat,3363.705,622.144,0.579
+cellula_MI_data_613.csv,LEFT,peaks + too big,24646.11,3502.022,0.0
+cellula_MI_data_614.csv,RIGHT,too big,7447.933,1103.218,0.0
+cellula_MI_data_615.csv,RIGHT,too big,6008.959,940.216,0.0
+cellula_MI_data_616.csv,LEFT,peaks + too big,19178.432,2354.174,0.0
+cellula_MI_data_617.csv,RIGHT,too big,7662.403,1140.229,0.0
+cellula_MI_data_618.csv,LEFT,peaks + too big,17987.376,3025.447,0.0
+cellula_MI_data_620.csv,RIGHT,peaks + too big,23217.957,4065.994,0.0
+cellula_MI_data_621.csv,LEFT,peaks + too big,40153.159,6276.443,0.0
+cellula_MI_data_624.csv,RIGHT,flat,1925.169,223.077,0.137
+cellula_MI_data_625.csv,LEFT,flat,2386.476,216.543,0.128
+cellula_MI_data_658.csv,RIGHT,peaks + too big + flat,55250.914,8200.734,0.297
+cellula_MI_data_659.csv,RIGHT,peaks + too big + flat,49374.262,6880.487,0.297
+cellula_MI_data_660.csv,RIGHT,peaks + too big + flat,54693.465,8123.201,0.364
+cellula_MI_data_661.csv,RIGHT,too big,4720.625,964.445,0.028
+cellula_MI_data_663.csv,LEFT,peaks + too big + flat,53913.03,7777.639,0.22
+cellula_MI_data_664.csv,RIGHT,peaks + too big + flat,55255.907,5559.561,0.1
+cellula_MI_data_665.csv,RIGHT,peaks + too big,51491.373,5414.915,0.095
+cellula_MI_data_687.csv,RIGHT,peaks + too big,9246.899,814.347,0.0
+cellula_MI_data_775.csv,LEFT,flat,6479.057,554.801,0.158
+cellula_MI_data_777.csv,LEFT,flat,3793.61,507.629,0.17
+cellula_MI_data_778.csv,RIGHT,flat,6708.593,636.44,0.16
+cellula_MI_data_782.csv,LEFT,flat,6025.189,592.887,0.162
+cellula_MI_data_783.csv,RIGHT,flat,5807.957,763.808,0.149
+cellula_MI_data_785.csv,LEFT,flat,3884.384,376.776,0.109
+cellula_MI_data_786.csv,RIGHT,flat,4524.181,345.609,0.109
+cellula_MI_data_787.csv,LEFT,flat,4716.793,467.052,0.118
+cellula_MI_data_796.csv,LEFT,flat,4516.507,381.986,0.104
+cellula_MI_data_797.csv,LEFT,flat,6186.319,530.614,0.106
+cellula_MI_data_798.csv,RIGHT,flat,6617.852,701.806,0.145
+cellula_MI_data_812.csv,RIGHT,flat,4049.783,471.382,0.144
+cellula_MI_data_819.csv,LEFT,flat,6341.584,568.208,0.108
+cellula_MI_data_820.csv,RIGHT,flat,6666.01,705.982,0.122
+cellula_MI_data_821.csv,LEFT,flat,5081.317,541.442,0.115
+cellula_MI_data_827.csv,RIGHT,peaks,9228.531,678.499,0.045
+cellula_MI_data_829.csv,LEFT,peaks,9572.666,588.502,0.025
+cellula_MI_data_831.csv,RIGHT,too big + flat,8292.469,984.167,0.11
+cellula_MI_data_833.csv,LEFT,peaks + too big + flat,10121.449,1213.422,0.166
+cellula_MI_data_834.csv,LEFT,flat,3997.919,457.66,0.139
+cellula_MI_data_835.csv,LEFT,flat,4786.012,409.679,0.106
+cellula_MI_data_836.csv,LEFT,flat,4520.264,364.236,0.117
+cellula_MI_data_838.csv,RIGHT,flat,4800.437,522.663,0.142
+cellula_MI_data_839.csv,RIGHT,flat,6297.307,749.837,0.186
+cellula_MI_data_841.csv,LEFT,flat,4415.303,448.844,0.142
+cellula_MI_data_846.csv,LEFT,flat,4936.507,605.701,0.102
+cellula_MI_data_852.csv,RIGHT,flat,3851.79,353.722,0.145
+cellula_MI_data_854.csv,RIGHT,flat,3164.492,310.748,0.143
+cellula_MI_data_867.csv,RIGHT,flat,4477.397,541.438,0.11
+cellula_MI_data_910.csv,RIGHT,flat,3569.405,466.499,0.237
+cellula_MI_data_933.csv,RIGHT,too big,8342.65,852.345,0.082
+cellula_MI_data_1000.csv,RIGHT,flat,2186.001,244.747,0.169
+cellula_MI_data_1001.csv,LEFT,flat,2144.251,249.46,0.104
+cellula_MI_data_1045.csv,LEFT,flat,6906.97,539.433,0.146
+cellula_MI_data_1063.csv,RIGHT,flat,6301.352,581.186,0.145
+cellula_MI_data_1065.csv,RIGHT,flat,4543.769,419.817,0.104
+cellula_MI_data_1067.csv,LEFT,flat,4233.269,388.708,0.141
+cellula_MI_data_1068.csv,LEFT,too big + flat,5480.683,902.253,0.484
+cellula_MI_data_1069.csv,RIGHT,flat,3412.751,452.201,0.191
+cellula_MI_data_1099.csv,LEFT,too big,7090.117,1014.743,0.0
+cellula_MI_data_1122.csv,RIGHT,too big,7563.102,962.526,0.0
+cellula_MI_data_1126.csv,RIGHT,peaks + too big,10308.115,1193.993,0.0
+cellula_MI_data_1130.csv,LEFT,peaks + too big,12171.517,1701.251,0.0
+cellula_MI_data_1133.csv,LEFT,too big,8175.379,1066.206,0.0
+cellula_MI_data_1134.csv,RIGHT,peaks + too big,9645.352,1730.878,0.0
+cellula_MI_data_1195.csv,RIGHT,peaks + too big + flat,9128.844,849.113,0.107
+cellula_MI_data_1198.csv,RIGHT,peaks + too big,10491.189,1169.314,0.037
+cellula_MI_data_1221.csv,LEFT,too big,7906.04,897.657,0.076
+cellula_MI_data_1243.csv,RIGHT,peaks,8484.899,552.541,0.076
+cellula_MI_data_1250.csv,RIGHT,peaks,9373.313,694.485,0.041
+cellula_MI_data_1342.csv,RIGHT,peaks + too big,19154.274,2486.356,0.038
+cellula_MI_data_1345.csv,RIGHT,peaks + too big,17097.702,1328.098,0.0
+cellula_MI_data_1347.csv,RIGHT,peaks + too big + flat,10019.672,924.128,0.1
+cellula_MI_data_1348.csv,RIGHT,too big,5593.064,854.89,0.029
+cellula_MI_data_1350.csv,LEFT,peaks + too big,82456.323,10826.745,0.0
+cellula_MI_data_1353.csv,LEFT,peaks,8594.741,335.019,0.038
+cellula_MI_data_1355.csv,RIGHT,peaks + too big,9326.445,850.084,0.098
+cellula_MI_data_1365.csv,RIGHT,peaks,9486.948,760.364,0.053
+cellula_MI_data_1368.csv,RIGHT,peaks + too big,8635.449,850.328,0.056
+cellula_MI_data_1369.csv,RIGHT,peaks,8787.421,787.883,0.0
+cellula_MI_data_1375.csv,RIGHT,peaks,8941.596,803.516,0.082
+cellula_MI_data_1378.csv,LEFT,peaks + too big,98812.501,12269.951,0.0
+cellula_MI_data_1387.csv,LEFT,peaks + too big,9402.18,957.419,0.0
+cellula_MI_data_1388.csv,RIGHT,peaks + too big,10542.671,1239.204,0.0
+cellula_MI_data_1389.csv,LEFT,peaks + too big,13167.796,1422.892,0.0
+cellula_MI_data_1390.csv,RIGHT,peaks + too big,18853.876,2420.414,0.0
+cellula_MI_data_1394.csv,RIGHT,too big,7256.04,825.907,0.0
+cellula_MI_data_1414.csv,LEFT,peaks + too big,30688.514,2996.598,0.047
+cellula_MI_data_1415.csv,LEFT,peaks + too big,32525.608,2012.587,0.032
+cellula_MI_data_1416.csv,RIGHT,peaks + too big,31069.286,2220.282,0.072
+cellula_MI_data_1417.csv,RIGHT,peaks + too big,15032.931,1011.603,0.03
+cellula_MI_data_1418.csv,RIGHT,peaks + too big + flat,26116.791,1787.944,0.101
+cellula_MI_data_1419.csv,LEFT,peaks + too big + flat,39100.638,4134.483,0.127
+cellula_MI_data_1420.csv,LEFT,peaks + too big,35043.246,3712.646,0.074
+cellula_MI_data_1422.csv,RIGHT,peaks + too big + flat,35216.978,4723.806,0.128
+cellula_MI_data_1430.csv,LEFT,peaks + too big,16988.538,970.47,0.0
+cellula_MI_data_1476.csv,LEFT,flat,1684.835,165.904,0.103
+cellula_MI_data_1516.csv,RIGHT,flat,3404.526,400.956,0.161
+cellula_MI_data_1567.csv,RIGHT,flat,1716.827,169.709,0.105
+cellula_MI_data_1570.csv,LEFT,flat,1922.399,193.997,0.116
+cellula_MI_data_1594.csv,RIGHT,flat,4237.04,460.064,0.162
+cellula_MI_data_1595.csv,LEFT,flat,3215.837,306.216,0.15
+cellula_MI_data_1603.csv,LEFT,flat,3298.611,318.697,0.102
+cellula_MI_data_1605.csv,RIGHT,flat,3070.293,334.153,0.136
+cellula_MI_data_1612.csv,LEFT,flat,2857.248,386.56,0.156
+cellula_MI_data_1621.csv,LEFT,flat,2976.026,256.931,0.106
+cellula_MI_data_1624.csv,LEFT,flat,2606.677,321.848,0.13
+cellula_MI_data_1625.csv,RIGHT,flat,2295.76,206.661,0.119
+cellula_MI_data_1631.csv,LEFT,flat,2348.046,296.383,0.15
+cellula_MI_data_1634.csv,LEFT,flat,1953.217,180.562,0.113
+cellula_MI_data_1638.csv,LEFT,flat,2743.475,268.831,0.11
+cellula_MI_data_1639.csv,LEFT,flat,3119.23,493.06,0.165
+cellula_MI_data_1648.csv,LEFT,flat,1497.671,207.108,0.124
+cellula_MI_data_1650.csv,LEFT,flat,1966.168,153.091,0.106
+cellula_MI_data_1651.csv,LEFT,flat,2708.739,238.93,0.115
+cellula_MI_data_1654.csv,LEFT,flat,2169.105,265.527,0.183
+cellula_MI_data_1655.csv,LEFT,flat,2146.636,264.539,0.119
+cellula_MI_data_1656.csv,LEFT,flat,2022.235,187.874,0.116
+cellula_MI_data_1666.csv,LEFT,flat,2673.458,245.707,0.101
+cellula_MI_data_1670.csv,RIGHT,flat,2292.577,200.34,0.127
+cellula_MI_data_1671.csv,RIGHT,flat,1724.425,218.433,0.136
+cellula_MI_data_1672.csv,LEFT,flat,2031.292,211.336,0.109
+cellula_MI_data_1673.csv,LEFT,flat,1881.895,202.241,0.123
+cellula_MI_data_1767.csv,RIGHT,flat,1931.253,160.293,0.123
+cellula_MI_data_1768.csv,LEFT,flat,2617.803,260.021,0.127
+cellula_MI_data_1772.csv,RIGHT,flat,1846.262,213.212,0.11
+cellula_MI_data_1819.csv,LEFT,peaks + too big,13704.164,1000.577,0.0
+cellula_MI_data_1828.csv,RIGHT,peaks + too big + flat,12841.809,1290.963,0.123
+cellula_MI_data_1831.csv,LEFT,flat,3202.136,392.314,0.154
+cellula_MI_data_1867.csv,LEFT,flat,2203.873,162.059,0.109
+cellula_MI_data_1873.csv,RIGHT,flat,2332.185,275.771,0.177
+cellula_MI_data_1964.csv,RIGHT,flat,2248.005,256.807,0.121
+cellula_MI_data_1968.csv,LEFT,flat,2250.74,267.969,0.117
+cellula_MI_data_1970.csv,RIGHT,flat,2157.661,256.818,0.146
+cellula_MI_data_1971.csv,RIGHT,flat,1856.88,214.965,0.102
+cellula_MI_data_2035.csv,RIGHT,peaks + too big,8780.525,920.238,0.066
+cellula_MI_data_2070.csv,LEFT,flat,1980.657,290.824,0.223
+cellula_MI_data_2130.csv,LEFT,flat,4689.368,490.015,0.13
