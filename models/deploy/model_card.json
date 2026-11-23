@@ -1,0 +1,95 @@
+{
+  "pipeline_version": "1.0",
+  "created": "2026-11-23T20:25:33",
+  "preprocessing_code": {
+    "bci_pipeline.py": "2670a34f69a859d7b997335e72a33b106056341781ef2be0b2a33846b90189f1",
+    "bci_features.py": "c6d4f67c69973a2ecfe480f20aeb8dba969d79f3414cd46651aff60e7a138894"
+  },
+  "config": {
+    "fs": 250,
+    "trial_seconds": 10,
+    "channels": [
+      "FZ",
+      "C3",
+      "CZ",
+      "C4"
+    ],
+    "bandpass_hz": [
+      0.5,
+      40
+    ],
+    "notch_hz": 50,
+    "notch_q": 30,
+    "artifact": {
+      "edge_seconds": 1.0,
+      "iqr_factor": 3,
+      "flat_share_limit": 0.1
+    },
+    "epoch_seconds": [
+      1.0,
+      9.0
+    ],
+    "session_gap_seconds": 60,
+    "random_seed": 42
+  },
+  "artifact_limits": {
+    "peak_to_peak": 8385.038157079885,
+    "std": 809.1576484955817,
+    "flat_share": 0.1
+  },
+  "dl_decimate": 2,
+  "class_names": [
+    "LEFT",
+    "RIGHT"
+  ],
+  "model_files": {
+    "CSP + SVM": "csp_svm.joblib",
+    "EEGNet": "eegnet.pt",
+    "CNN-LSTM": "cnn_lstm.pt",
+    "Transformer": "transformer.pt"
+  },
+  "epochs": {
+    "EEGNet": 40,
+    "CNN-LSTM": 40,
+    "Transformer": 10
+  },
+  "training_data": {
+    "trials": 1831,
+    "LEFT": 916,
+    "RIGHT": 915,
+    "sessions": 78
+  },
+  "cv": {
+    "CNN-LSTM": {
+      "accuracy": 0.484,
+      "balanced_acc": 0.485,
+      "f1": 0.43,
+      "auc": 0.468
+    },
+    "CSP + SVM": {
+      "accuracy": 0.496,
+      "balanced_acc": 0.496,
+      "f1": 0.622,
+      "auc": 0.487
+    },
+    "EEGNet": {
+      "accuracy": 0.482,
+      "balanced_acc": 0.482,
+      "f1": 0.501,
+      "auc": 0.491
+    },
+    "Transformer": {
+      "accuracy": 0.48,
+      "balanced_acc": 0.478,
+      "f1": 0.419,
+      "auc": 0.466
+    }
+  },
+  "best_model": "EEGNet",
+  "versions": {
+    "torch": "2.14.1+cpu",
+    "scikit-learn": "1.9.1",
+    "numpy": "2.5.3"
+  },
+  "warning": "Cross-validated performance is at chance level for every model. Section 7 found duplicated files with conflicting labels (only 12 of 36 duplicate pairs agree), so labels.csv does not reliably match the trial files. Predictions are not trustworthy until a label file that names each trial's file is provided."
+}

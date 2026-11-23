@@ -10,3 +10,4 @@ torch
 openpyxl
 joblib
 jupyter
+streamlit
