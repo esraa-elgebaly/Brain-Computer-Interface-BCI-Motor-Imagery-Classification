@@ -1,0 +1,677 @@
+<title>مشروع BCI لتخيّل الحركة</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one reading column (RTL) with a full-width signal band on top; tables and diagrams scroll inside their own boxes */
+:root {
+  --bg: #f6f8f8;
+  --surface: #ffffff;
+  --fg: #16232a;
+  --muted: #55666e;
+  --line: #d6e0e2;
+  --accent: #0b7a75;          /* EEG-monitor teal */
+  --accent-soft: #e0f1ef;
+  --left: #1f6fb4;            /* LEFT class, same as the notebook plots */
+  --right: #d9711a;           /* RIGHT class */
+  --warn: #a8432a;
+  --warn-soft: #fbece6;
+  --ok: #2c7a3f;
+  --ok-soft: #e6f3e8;
+  --font-body: "IBM Plex Sans Arabic", "Segoe UI", Tahoma, sans-serif;
+  --font-mono: "IBM Plex Mono", Consolas, "Courier New", monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0e1619; --surface: #152126; --fg: #e3ecee; --muted: #9db0b6; --line: #2a3b41;
+    --accent: #3cc2b9; --accent-soft: #163a38; --left: #6aaee8; --right: #f0a05a;
+    --warn: #f08a6c; --warn-soft: #3a211b; --ok: #6cc985; --ok-soft: #173023; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0e1619; --surface: #152126; --fg: #e3ecee; --muted: #9db0b6; --line: #2a3b41;
+  --accent: #3cc2b9; --accent-soft: #163a38; --left: #6aaee8; --right: #f0a05a;
+  --warn: #f08a6c; --warn-soft: #3a211b; --ok: #6cc985; --ok-soft: #173023; color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body {
+  background: var(--bg); color: var(--fg);
+  font-family: var(--font-body); font-size: 17px; line-height: 1.85;
+}
+.wrap {
+  max-width: 980px; margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 0 64px;
+}
+h1, h2, h3, h4 { text-wrap: balance; line-height: 1.35; margin: 0; }
+h1 { font-size: clamp(1.8rem, 4.5vw, 2.6rem); font-weight: 700; }
+h2 { font-size: 1.55rem; font-weight: 700; padding-top: 8px; }
+h3 { font-size: 1.18rem; font-weight: 600; color: var(--accent); }
+h4 { font-size: 1.02rem; font-weight: 600; }
+p { margin: 0; max-width: 72ch; }
+ul, ol { margin: 0; padding-inline-start: 1.3em; display: grid; gap: 4px; max-width: 72ch; }
+a { color: var(--accent); }
+a:focus-visible, summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+code, .en, .num {
+  font-family: var(--font-mono); font-size: 0.86em; direction: ltr; unicode-bidi: isolate;
+}
+code { background: var(--accent-soft); color: var(--fg); padding: 1px 6px; border-radius: 4px; }
+.num { font-variant-numeric: tabular-nums; }
+.L { color: var(--left); font-weight: 600; }
+.R { color: var(--right); font-weight: 600; }
+
+/* top band */
+.band { background: var(--surface); border-bottom: 1px solid var(--line); }
+.band .wrap { padding-block: 36px 28px; display: grid; gap: 14px; }
+.eyebrow { font-size: 0.85rem; letter-spacing: 0.04em; color: var(--accent); font-weight: 600; }
+.lede { font-size: 1.1rem; color: var(--muted); }
+.trace { width: 100%; height: 56px; display: block; }
+.trace path { fill: none; stroke-width: 1.6; }
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; }
+.stat { border: 1px solid var(--line); border-radius: 8px; padding: 10px 14px; background: var(--bg); }
+.stat b { display: block; font-family: var(--font-mono); font-size: 1.35rem; font-variant-numeric: tabular-nums; direction: ltr; text-align: right; }
+.stat span { font-size: 0.85rem; color: var(--muted); }
+
+/* sections */
+section { display: grid; gap: 14px; padding-top: 44px; }
+.toc { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 4px 24px; padding: 18px 20px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); }
+.toc a { text-decoration: none; color: var(--fg); display: flex; gap: 10px; padding: 3px 0; }
+.toc a span { color: var(--accent); font-family: var(--font-mono); min-width: 1.8em; }
+.toc a:hover { color: var(--accent); }
+
+.step { display: grid; gap: 10px; padding: 18px 20px; background: var(--surface); border: 1px solid var(--line); border-radius: 8px; }
+.step-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 10px; }
+.tag { font-family: var(--font-mono); font-size: 0.78rem; background: var(--accent); color: var(--surface); padding: 2px 8px; border-radius: 4px; direction: ltr; }
+.kv { display: grid; grid-template-columns: 7.5em 1fr; gap: 6px 14px; }
+.kv dt { color: var(--muted); font-weight: 600; }
+.kv dd { margin: 0; min-width: 0; }
+@media (max-width: 560px) { .kv { grid-template-columns: 1fr; } .kv dt { margin-top: 6px; } }
+
+.note { padding: 12px 16px; border-radius: 8px; background: var(--accent-soft); border-inline-start: 4px solid var(--accent); }
+.warn { padding: 12px 16px; border-radius: 8px; background: var(--warn-soft); border-inline-start: 4px solid var(--warn); }
+.okbox { padding: 12px 16px; border-radius: 8px; background: var(--ok-soft); border-inline-start: 4px solid var(--ok); }
+
+.table { overflow-x: auto; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); }
+table { border-collapse: collapse; width: 100%; font-size: 0.93rem; }
+th, td { padding: 9px 12px; text-align: right; vertical-align: top; border-bottom: 1px solid var(--line); }
+th { background: var(--bg); font-weight: 600; white-space: nowrap; }
+tr:last-child td { border-bottom: 0; }
+td.n { font-family: var(--font-mono); font-variant-numeric: tabular-nums; direction: ltr; text-align: left; white-space: nowrap; }
+
+.diagram { overflow-x: auto; background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 12px; direction: ltr; }
+.two { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px; align-items: start; }
+@media (max-width: 760px) { .two { grid-template-columns: 1fr; } }
+.head svg { width: 100%; max-width: 340px; height: auto; display: block; margin: 0 auto; }
+.head .skull { fill: var(--surface); stroke: var(--muted); stroke-width: 2; }
+.head .el { stroke: var(--surface); stroke-width: 2; }
+.head text { font-family: var(--font-mono); font-size: 13px; fill: var(--fg); }
+.head .small { font-family: var(--font-body); font-size: 11px; fill: var(--muted); }
+
+.funnel { display: grid; gap: 8px; }
+.bar { display: grid; grid-template-columns: 1fr auto; gap: 10px; align-items: center; }
+.bar i { display: block; height: 26px; border-radius: 4px; background: var(--accent); opacity: 0.85; }
+.bar small { color: var(--muted); }
+.bar b { font-family: var(--font-mono); font-variant-numeric: tabular-nums; direction: ltr; }
+
+details { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 10px 16px; }
+details + details { margin-top: 8px; }
+summary { cursor: pointer; font-weight: 600; }
+details > div { padding-top: 8px; display: grid; gap: 8px; }
+
+.chain { counter-reset: c; list-style: none; padding: 0; display: grid; gap: 10px; }
+.chain li { counter-increment: c; display: grid; grid-template-columns: 2.2em 1fr; gap: 10px; align-items: start; }
+.chain li::before { content: counter(c); font-family: var(--font-mono); background: var(--warn); color: var(--surface); border-radius: 50%; width: 1.9em; height: 1.9em; display: grid; place-items: center; font-size: 0.85rem; }
+footer { padding-top: 48px; color: var(--muted); font-size: 0.9rem; }
+@media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+</style>
+
+<div dir="rtl" lang="ar">
+
+<header class="band">
+  <div class="wrap">
+    <div class="eyebrow">Brain-Computer Interface · Motor Imagery · شرح المشروع كامل</div>
+    <h1>مشروع تصنيف تخيّل الحركة من إشارات المخ</h1>
+    <p class="lede">الهدف: من إشارة EEG بس، نعرف الشخص بيتخيّل إنه بيحرّك إيده <span class="L">الشمال (LEFT)</span> ولا <span class="R">اليمين (RIGHT)</span>، من غير أي حركة حقيقية. الصفحة دي بتشرح كل اللي عملناه، وليه عملناه، وإيه اللي لاحظناه، بالأرقام الحقيقية من الـ notebook.</p>
+    <svg class="trace" viewBox="0 0 900 56" preserveAspectRatio="none" aria-hidden="true">
+      <path id="trL" stroke="var(--left)"></path>
+      <path id="trR" stroke="var(--right)" opacity="0.8"></path>
+    </svg>
+    <div class="stats">
+      <div class="stat"><b>2160</b><span>trial (ملف CSV)</span></div>
+      <div class="stat"><b>4 × 2500</b><span>قنوات × عينات (10 ث عند 250 Hz)</span></div>
+      <div class="stat"><b>1831</b><span>trial دخلت الموديلات</span></div>
+      <div class="stat"><b>≈ 50%</b><span>دقة كل الموديلات (chance)</span></div>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+<section aria-label="المحتويات">
+  <nav class="toc">
+    <a href="#idea"><span>01</span>الفكرة في دقيقة</a>
+    <a href="#eeg"><span>02</span>يعني إيه EEG و Motor Imagery</a>
+    <a href="#ts"><span>03</span>الفرق بين Time series عادية وإشارات المخ</a>
+    <a href="#data"><span>04</span>الداتا اللي عندنا</a>
+    <a href="#prep"><span>05</span>الـ Preprocessing خطوة خطوة</a>
+    <a href="#balance"><span>06</span>الـ Class balance</a>
+    <a href="#removed"><span>07</span>مسحنا إيه من الداتا وليه</a>
+    <a href="#dups"><span>08</span>الـ Duplicates: اكتشفناها وتعاملنا معاها ازاي</a>
+    <a href="#problem"><span>09</span>ازاي اتأكدنا إن فيه مشكلة في الداتا</a>
+    <a href="#features"><span>10</span>الـ Features اللي استخدمناها</a>
+    <a href="#cv"><span>11</span>الـ Cross-validation (subject-aware)</a>
+    <a href="#models"><span>12</span>الـ Modeling: من الـ Baseline لحد CNN-LSTM</a>
+    <a href="#decide"><span>13</span>قررنا نغيّر الموديل بناءً على إيه</a>
+    <a href="#metrics"><span>14</span>المقاييس والنتايج النهائية</a>
+    <a href="#methods"><span>15</span>كل الـ methods اللي استخدمناها</a>
+    <a href="#deploy"><span>16</span>الـ Deployment</a>
+    <a href="#end"><span>17</span>الخلاصة والخطوة الجاية</a>
+    <a href="#qa"><span>18</span>أسئلة متوقعة في العرض</a>
+  </nav>
+</section>
+
+<!-- 01 -->
+<section id="idea">
+  <h2>01 · الفكرة في دقيقة</h2>
+  <p>عندنا تسجيلات EEG، وكل تسجيل (trial) مدته 10 ثواني وعليه label: الشخص كان بيتخيّل <span class="L">LEFT</span> ولا <span class="R">RIGHT</span>. اشتغلنا على المشروع بنفس ترتيب التاسك بالظبط:</p>
+  <div class="diagram">
+<pre class="mermaid">
+flowchart LR
+  A["1. Data<br/>2160 files + labels"] --> B["2. Processing<br/>Steps 1-8"]
+  B --> C["3. EDA<br/>3.1 - 3.4"]
+  C --> D["4. Features<br/>CSP / tensors"]
+  D --> E["5. Modeling<br/>CSP+SVM, EEGNet, CNN-LSTM"]
+  E --> F["6. Evaluation<br/>session-based CV"]
+  F --> G["7. Deployment<br/>Streamlit app"]
+</pre>
+  </div>
+  <div class="warn"><b>النتيجة باختصار:</b> الـ pipeline شغال صح من أوله لآخره، وكل خطوة متأكدين منها بالأرقام. لكن كل الموديلات طلعت حوالي 50%، يعني زي رمي العملة. وجمعنا أدلة كتير إن السبب <b>مش في الكود ولا في الموديل</b>، السبب إن الـ labels مش متوصّلة بالملفات صح. التفاصيل في قسم 09.</div>
+</section>
+
+<!-- 02 -->
+<section id="eeg">
+  <h2>02 · يعني إيه EEG و Motor Imagery؟</h2>
+  <div class="two">
+    <div style="display:grid;gap:12px;min-width:0">
+      <p><b>EEG</b> (Electroencephalography) هو قياس الجهد الكهربي على فروة الراس بأقطاب (electrodes). كل قطب بيقيس <b>مجموع</b> نشاط ملايين الخلايا العصبية اللي تحته وهي بتشتغل مع بعض. الإشارة صغيرة جدًا، بالميكروفولت.</p>
+      <p>عندنا <b>4 أقطاب</b>:</p>
+      <ul>
+        <li><code>C3</code>: فوق القشرة الحركية <b>الشمال</b> من المخ، ودي بتتحكم في <span class="R">اليد اليمين</span>.</li>
+        <li><code>C4</code>: فوق القشرة الحركية <b>اليمين</b> من المخ، ودي بتتحكم في <span class="L">اليد الشمال</span>.</li>
+        <li><code>CZ</code>: في النص فوق، و <code>FZ</code>: في النص من قدّام.</li>
+      </ul>
+    </div>
+    <figure class="head" style="margin:0">
+      <svg viewBox="0 0 340 330" role="img" aria-label="أماكن الأقطاب الأربعة على الراس من فوق">
+        <polygon points="170,22 158,44 182,44" class="skull"/>
+        <ellipse cx="38" cy="175" rx="12" ry="26" class="skull"/>
+        <ellipse cx="302" cy="175" rx="12" ry="26" class="skull"/>
+        <circle cx="170" cy="175" r="132" class="skull"/>
+        <circle cx="170" cy="98" r="15" class="el" fill="var(--muted)"/>
+        <circle cx="170" cy="175" r="15" class="el" fill="var(--muted)"/>
+        <circle cx="96" cy="175" r="17" class="el" fill="var(--right)"/>
+        <circle cx="244" cy="175" r="17" class="el" fill="var(--left)"/>
+        <text x="170" y="78" text-anchor="middle">FZ</text>
+        <text x="170" y="210" text-anchor="middle">CZ</text>
+        <text x="96" y="214" text-anchor="middle">C3</text>
+        <text x="244" y="214" text-anchor="middle">C4</text>
+        <text x="96" y="232" text-anchor="middle" class="small">← يحرّك اليد اليمين</text>
+        <text x="244" y="232" text-anchor="middle" class="small">يحرّك اليد الشمال →</text>
+        <text x="170" y="16" text-anchor="middle" class="small">الأنف (قدّام)</text>
+        <text x="40" y="300" text-anchor="middle" class="small">شمال المخ</text>
+        <text x="300" y="300" text-anchor="middle" class="small">يمين المخ</text>
+      </svg>
+      <figcaption style="text-align:center;color:var(--muted);font-size:.85rem">الراس من فوق. كل نص من المخ بيتحكم في اليد العكسية</figcaption>
+    </figure>
+  </div>
+  <h3>إيه اللي بيحصل لما حد يتخيّل الحركة؟</h3>
+  <p>القشرة الحركية وهي مرتاحة بتطلع إيقاعات ثابتة: <b>mu</b> من 8 لـ 12 Hz، و <b>beta</b> من 13 لـ 30 Hz. لما الشخص يتخيّل إنه بيحرّك إيده، الإيقاعات دي <b>بتضعف</b> فوق نص المخ العكسي. الضعف ده اسمه <b>ERD</b> (Event-Related Desynchronization).</p>
+  <div class="table"><table>
+    <thead><tr><th>الشخص بيتخيّل</th><th>المفروض الـ power يقل فين</th><th>يعني</th></tr></thead>
+    <tbody>
+      <tr><td><span class="L">LEFT</span> (اليد الشمال)</td><td><code>C4</code> (يمين المخ)</td><td>C4 أضعف من C3</td></tr>
+      <tr><td><span class="R">RIGHT</span> (اليد اليمين)</td><td><code>C3</code> (شمال المخ)</td><td>C3 أضعف من C4</td></tr>
+    </tbody>
+  </table></div>
+  <div class="note"><b>أهم نقطة في المشروع كله:</b> المعلومة مش في شكل الموجة نفسها. المعلومة في <b>قوة (power) ترددات معينة (mu/beta) في أماكن معينة (C3 مقابل C4)</b>. عشان كده التاسك بيقول إن الهدف الأساسي من الـ processing هو إننا نحافظ على mu و beta نضاف.</div>
+</section>
+
+<!-- 03 -->
+<section id="ts">
+  <h2>03 · الفرق بين Time series عادية وإشارات المخ (EEG)</h2>
+  <p>الـ EEG هي time series فعلًا: أرقام ورا بعض في الزمن. بس طريقة التعامل معاها مختلفة جدًا عن time series زي المبيعات أو درجات الحرارة أو أسعار الأسهم:</p>
+  <div class="table"><table>
+    <thead><tr><th>الجانب</th><th>Time series عادية</th><th>EEG (إشارات المخ)</th></tr></thead>
+    <tbody>
+      <tr><td>المعلومة فين</td><td>في القيمة نفسها، والـ trend، والـ seasonality</td><td>في <b>قوة الترددات</b> (mu/beta)، ومكانها على الراس</td></tr>
+      <tr><td>عدد القنوات</td><td>غالبًا قناة واحدة</td><td>كذا قناة في نفس اللحظة، والعلاقة بينهم مهمة (C3 مقابل C4)</td></tr>
+      <tr><td>معدل العينات</td><td>كل يوم، أو كل ساعة</td><td><span class="num">250</span> عينة في الثانية</td></tr>
+      <tr><td>الضوضاء</td><td>متوسطة</td><td>ضخمة: الإشارة بالميكروفولت ومدفونة تحت كهربا البيت (50 Hz أقوى منها <span class="num">×2940</span>)، وحركة العضلات، والرمش</td></tr>
+      <tr><td>الثبات (stationarity)</td><td>غالبًا فيه pattern متكرر</td><td>بتتغيّر من session لـ session ومن شخص لشخص ومن يوم ليوم</td></tr>
+      <tr><td>المهمة</td><td>غالبًا forecasting (توقّع القيمة الجاية)</td><td><b>classification</b> لشباك زمني كامل (epoch): LEFT ولا RIGHT؟</td></tr>
+      <tr><td>الـ Features</td><td>lags، rolling mean، الـ trend</td><td>band power، الـ CSP، الـ log-variance، الـ spectrograms</td></tr>
+      <tr><td>الـ Validation</td><td>split حسب الوقت</td><td>split حسب الـ <b>session/الشخص</b>، عشان الموديل ما يتعلمش "بصمة الجلسة" بدل الإشارة</td></tr>
+    </tbody>
+  </table></div>
+  <div class="note">لو قصدك بـ "neuron data" تسجيل <b>خلايا عصبية فردية</b> (spikes) بإبر جوه المخ: ده نوع تاني خالص، ومعلومته في توقيت الـ spikes. الـ EEG مش بيشوف خلية واحدة، بيشوف <b>المجموع</b> من بره الجمجمة. عشان كده الإشارة ضعيفة وبنشتغل على قوة الترددات مش على الـ spikes.</div>
+</section>
+
+<!-- 04 -->
+<section id="data">
+  <h2>04 · الداتا اللي عندنا (التاسك قال إيه والحقيقة إيه)</h2>
+  <div class="table"><table>
+    <thead><tr><th>التاسك قال</th><th>الحقيقة في الداتا</th><th>عملنا إيه</th></tr></thead>
+    <tbody>
+      <tr><td>حوالي 2000 ملف Excel</td><td><span class="num">2160</span> ملف <b>CSV</b>، فيهم الأعمدة <code>Time, FZ, C3, CZ, C4</code></td><td>قريناهم بـ <code>pandas.read_csv</code>، والـ app بيقبل Excel كمان</td></tr>
+      <tr><td>Sampling rate من 128 لـ 256 Hz</td><td><b>250 Hz</b></td><td>جوه المدى، شوف الفخ تحت</td></tr>
+      <tr><td>كل trial من 3 لـ 8 ثواني</td><td><b>10 ثواني</b> (2500 صف في كل ملف)</td><td>اخترنا شباك من 1 لـ 9 ثانية (Step 6)</td></tr>
+      <tr><td>Label لكل ملف، و map من اسم الملف للـ label</td><td><code>labels.csv</code> فيه <span class="num">2400</span> label في عمود واحد، <b>من غير أسماء ملفات</b></td><td>وصّلناهم بالترتيب: ملف رقم 1 ياخد label رقم 1، وهكذا. ودي أضعف نقطة في المشروع</td></tr>
+    </tbody>
+  </table></div>
+  <h3>فخ الـ sampling rate</h3>
+  <p>لو حسبنا الـ rate من متوسط (median) الوقت بين صفّين في عمود <code>Time</code> هيطلع <b>416 Hz</b>، وده غلط. عمود الوقت بيوصل على دفعات (bursts) فالفروق بين الصفوف مش منتظمة، ومدة الملفات حسب عمود Time بتتراوح من 8.7 لـ 11.5 ثانية مع إن كل الملفات فيها نفس الـ 2500 صف. الحساب الصح: <b>2500 صف ÷ 10 ثواني = 250 Hz</b>.</p>
+  <div class="okbox"><b>ازاي اتأكدنا إن 250 صح؟</b> بعد ما حسبنا الـ spectrum على أساس 250 Hz، ضوضاء الكهربا ظهرت <b>بالظبط عند 50 Hz</b>، وده تردد الكهربا في مصر. وكمان إيقاع mu ظهر عند حوالي <b>10 Hz</b>، وده مكانه الطبيعي في المخ. لو الـ rate كان 416، الضوضاء كانت هتظهر عند حوالي 30 Hz، وده مستحيل.</div>
+</section>
+
+<!-- 05 -->
+<section id="prep">
+  <h2>05 · الـ Preprocessing خطوة خطوة (Table 1 في التاسك)</h2>
+  <p>شكل الداتا وهي ماشية في الـ pipeline (الأبعاد = trials × channels × samples):</p>
+  <div class="diagram">
+<pre class="mermaid">
+flowchart LR
+  R["Raw<br/>2160 x 4 x 2500"] --> F["Band-pass + Notch<br/>2160 x 4 x 2500"]
+  F --> AR["Artifact rejection<br/>1891 x 4 x 2500"]
+  AR --> EP["Epoch 1-9 s + Baseline<br/>1891 x 4 x 2000"]
+  EP --> DU["Drop duplicates<br/>1831 x 4 x 2000"]
+  DU --> CSP["CSP features<br/>1831 x 4"]
+  DU --> DL["EEGNet / CNN-LSTM input<br/>1831 x 1 x 4 x 1000"]
+</pre>
+  </div>
+
+  <article class="step">
+    <div class="step-head"><span class="tag">Step 1</span><h3>Load &amp; Organize</h3></div>
+    <dl class="kv">
+      <dt>عملنا إيه</dt><dd>جبنا الـ 2160 ملف ورتّبناهم <b>بالرقم</b> مش بالحروف (الترتيب بالحروف بيحط ملف 10 قبل ملف 2، فالـ labels تتلخبط). اتأكدنا إن الأرقام من 1 لـ 2160 من غير ولا رقم ناقص. وصّلنا كل ملف بالـ label بتاعه، وحفظنا <code>label_map.csv</code>.</dd>
+      <dt>اتأكدنا من</dt><dd>كل الملفات فيها نفس الـ 4 قنوات، وكلها 2500 صف، و<b>0</b> قيم ناقصة (NaN). وحسبنا لكل ملف "بصمة" (hash) للإشارة، هنستخدمها بعدين في قسم 08.</dd>
+      <dt>ليه</dt><dd>كل اللي بعد كده مبني على إن كل trial معاها الـ label الصح، وإن كل الملفات نفس الشكل عشان نحطهم في array واحد.</dd>
+    </dl>
+  </article>
+
+  <article class="step">
+    <div class="step-head"><span class="tag">Step 2</span><h3>Band-pass filter من 0.5 لـ 40 Hz</h3></div>
+    <dl class="kv">
+      <dt>عملنا إيه</dt><dd>فلتر <b>Butterworth</b> من الدرجة الرابعة، بنعدّي بيه على الإشارة <b>رايح وجاي</b> (<code>filtfilt</code>).</dd>
+      <dt>ليه</dt><dd>اللي تحت 0.5 Hz ده انجراف بطيء في الأقطاب (drift) وإزاحة ثابتة كبيرة: متوسط C3 كان <span class="num">320,966</span>. واللي فوق 40 Hz ده عضلات وضوضاء كهربا. أما mu و beta (من 8 لـ 30 Hz) فبيعدّوا من غير ما يتأثروا (0 dB عند 10 Hz).</dd>
+      <dt>ليه رايح وجاي</dt><dd>الفلتر العادي بيأخّر الإشارة في الزمن. لما نعدّي بيه مرتين في اتجاهين عكس بعض، التأخير بيلغي نفسه (zero-phase)، وده مهم عشان هنقص شباك زمني في Step 6.</dd>
+      <dt>النتيجة</dt><dd>الإشارة بقت حوالين الصفر (متوسطها <span class="num">−1.75</span> بدل <span class="num">320,966</span>). بس ظهر حاجتين لسه: قفزات حادة من الجهاز، وانحناء في أول وآخر ثانية بسبب الفلتر نفسه (edge effect).</dd>
+    </dl>
+  </article>
+
+  <article class="step">
+    <div class="step-head"><span class="tag">Step 3</span><h3>Notch filter عند 50 Hz</h3></div>
+    <dl class="kv">
+      <dt>عملنا إيه</dt><dd>فلتر <code>iirnotch</code> بيشيل تردد واحد بس، 50 Hz، بعرض ضيق (Q = 30).</dd>
+      <dt>ليه 50 مش 60</dt><dd>من الداتا نفسها: قمة الـ 50 Hz أقوى من الترددات اللي جنبها <span class="num">×2940</span>، أما عند 60 Hz فمفيش أي قمة (<span class="num">×0.4</span>). والكهربا في مصر 50 Hz.</dd>
+      <dt>ليه مع إن عندنا band-pass</dt><dd>الـ band-pass بيضعّف الـ 50 Hz حوالي 10 dB بس، والضوضاء دي ضخمة جدًا. القوة عند 50 Hz: خام <span class="num">3.41e6</span>، وبعد الـ band-pass <span class="num">3.05e4</span>، وبعد الـ notch <span class="num">6.04</span>.</dd>
+      <dt>الدليل إن mu سليم</dt><dd>القوة عند 10 Hz فضلت <span class="num">508</span> قبل الفلاتر وبعدها، ما اتغيرتش.</dd>
+    </dl>
+  </article>
+
+  <article class="step">
+    <div class="step-head"><span class="tag">Step 4</span><h3>Artifact rejection (شيل الـ trials البايظة)</h3></div>
+    <dl class="kv">
+      <dt>عملنا إيه</dt><dd>حسبنا 3 مقاييس لكل trial، وتجاهلنا أول وآخر ثانية عشان الفلتر بيحنيهم:
+        <ul>
+          <li><b>Peak-to-peak</b>: الفرق بين أعلى وأقل قيمة. بيمسك الرمش وقفزات الأقطاب.</li>
+          <li><b>Std</b>: حجم الإشارة كلها. بيمسك العضلات والموجات البطيئة الكبيرة.</li>
+          <li><b>Flat share</b>: نسبة العينات اللي القيمة فيها ما اتغيرتش عن اللي قبلها. بتمسك قطب مفصول أو جهاز بيكرر نفس القيمة.</li>
+        </ul></dd>
+      <dt>الحد اتحدد ازاي</dt><dd>من الداتا نفسها مش برقم من دماغنا: <b>Q3 + 3×IQR</b>. الـ IQR هو المدى اللي فيه نص الـ trials اللي في النص. فالحد ده "بعيد جدًا عن الطبيعي"، وبيمسك الـ trials الشاذة بس. وللـ flat الحد 10%.</dd>
+      <dt>النتيجة</dt><dd>شلنا <b>269 من 2160 (12.5%)</b>، وكل trial اتشالت متسجلة مع سببها في <code>removed_trials.csv</code>، زي ما التاسك طالب ("document it!"). الأسباب: flat 94، peaks + too big 83، too big 46، peaks + too big + flat 19، peaks 16، too big + flat 11.</dd>
+      <dt>اتأكدنا إنه عادل</dt><dd>نسبة الشيل كانت 12.4% من الـ LEFT و12.5% من الـ RIGHT (اختبار chi-square: p = 0.97). يعني الشيل ما ظلمش ولا class.</dd>
+      <dt>ليه trial كاملة مش قناة</dt><dd>التاسك بيقول "trials/channels". بس عندنا 4 قنوات بس، ولو شلنا قناة من trial، المقارنة بين C3 و C4 هتبوظ، والموديل محتاج نفس الشكل في كل trial.</dd>
+    </dl>
+  </article>
+
+  <article class="step">
+    <div class="step-head"><span class="tag">Step 5</span><h3>Re-referencing (CAR)</h3></div>
+    <dl class="kv">
+      <dt>عملنا إيه</dt><dd><b>Common Average Reference</b>: في كل لحظة بنطرح متوسط الـ 4 قنوات من كل قناة.</dd>
+      <dt>ليه</dt><dd>الضوضاء اللي بتوصل للأقطاب كلها بنفس الشكل بتتشال. وده اشتغل فعلًا: الارتباط بين القنوات نزل من <span class="num">0.79</span> لـ <span class="num">−0.25</span>.</dd>
+      <dt>المشكلة</dt><dd>مع 4 أقطاب بس، "المتوسط" فيه C3 و C4 نفسهم. فجزء من C3 بيدخل في C4 والعكس، والارتباط بقى سالب، يعني الـ CAR صلّح زيادة عن اللزوم. وكمان قفزة في قناة واحدة بتنتقل للقنوات التانية.</dd>
+      <dt>عملنا إيه بعدها</dt><dd>احتفظنا بالنسختين وجرّبناهم في الموديل: CSP+SVM من غير CAR جاب AUC <span class="num">0.504</span>، وبالـ CAR جاب <span class="num">0.497</span>. مفيش فايدة، فالـ pipeline الأساسي <b>من غير CAR</b>. والـ Laplacian (الاختيار التاني في التاسك) محتاج أقطاب حوالين C3 و C4، ومش موجودة عندنا.</dd>
+    </dl>
+  </article>
+
+  <article class="step">
+    <div class="step-head"><span class="tag">Step 6</span><h3>Epoching (اختيار الشباك الزمني)</h3></div>
+    <dl class="kv">
+      <dt>التاسك قال</dt><dd>نقص الشباك اللي بعد الـ cue، مثلًا من 0.5 لـ 3.5 ثانية.</dd>
+      <dt>المشكلة</dt><dd>الملفات <b>مفيهاش أي علامة cue</b>، فمش عارفين التخيّل بدأ إمتى.</dd>
+      <dt>الحل</dt><dd>رسمنا قوة mu مع الوقت لكل class على C3 و C4، واستخدمنا log + median عشان كام trial فيهم spikes ما يشدّوش المنحنى. وشفنا: أول نص ثانية أعلى بـ <span class="num">+4.64</span> (بالـ log) من المستوى الثابت، ومن 0.5 لـ 1 ثانية أعلى بـ <span class="num">+1.19</span>، وآخر نص ثانية <span class="num">+1.52</span>. ده كله انحناء الفلتر مش المخ. ومن 1 لـ 9 ثواني المنحنى ثابت.</dd>
+      <dt>القرار</dt><dd>قصّينا كل trial من <b>1 لـ 9 ثواني</b> (2000 عينة). ما لقيناش لحظة واضحة الـ mu بيقع فيها، فالغالب إن الشخص بيتخيّل طول الـ trial، وعشان كده خدنا كل الجزء النضيف.</dd>
+    </dl>
+  </article>
+
+  <article class="step">
+    <div class="step-head"><span class="tag">Step 7</span><h3>Baseline correction</h3></div>
+    <dl class="kv">
+      <dt>التاسك قال</dt><dd>نطرح متوسط الفترة اللي قبل الـ stimulus.</dd>
+      <dt>عملنا إيه</dt><dd>مفيش فترة راحة قبل التخيّل، فطرحنا من كل epoch <b>متوسطها هي</b>، لكل قناة لوحدها.</dd>
+      <dt>ليه</dt><dd>القص بيسيب إزاحة صغيرة (أكبرها كان <span class="num">175.6</span>). الطرح بيخلي كل epoch حوالين الصفر (<span class="num">4e-14</span>) من غير ما يغيّر شكل الموجة، فقوة mu و beta زي ما هي.</dd>
+    </dl>
+  </article>
+
+  <article class="step">
+    <div class="step-head"><span class="tag">Step 8</span><h3>Normalization</h3></div>
+    <dl class="kv">
+      <dt>عملنا إيه</dt><dd><b>Z-score</b> لكل قناة في كل epoch: نطرح المتوسط ونقسم على الـ std، فتبقى كل قناة متوسطها 0 والـ std بتاعها 1. ده للموديلات العميقة بس.</dd>
+      <dt>ليه</dt><dd>أحجام الـ trials كانت مختلفة جدًا: الـ std من <span class="num">5.3</span> لـ <span class="num">765</span>، يعني فرق <span class="num">×143</span>. الـ neural networks بتتعلم أحسن لما كل المدخلات على نفس المقياس.</dd>
+      <dt>ليه مش لـ CSP</dt><dd>الـ CSP شغال على الـ variance (القوة). لو خلينا الـ std بتاع كل قناة 1، هنمسح بالظبط الضعف في القوة (ERD) اللي هو بيدوّر عليه.</dd>
+    </dl>
+  </article>
+
+  <div class="okbox"><b>Key physiological target:</b> قمة mu عند حوالي 10 Hz ظاهرة على C3 و C4 بعد كل الـ processing، والقوة عند 10 Hz ما اتغيرتش. يعني حافظنا على mu و beta، وده أهم هدف حدده التاسك للـ processing. وفي الآخر حفظنا الـ arrays النضيفة (<code>epochs_noCAR.npy</code> و<code>epochs_CAR.npy</code>)، واتأكدنا إن كود الـ app بيطلّع <b>نفس النتيجة بالظبط</b> (True).</div>
+</section>
+
+<!-- 06 -->
+<section id="balance">
+  <h2>06 · الـ Class balance</h2>
+  <div class="table"><table>
+    <thead><tr><th>المرحلة</th><th>LEFT</th><th>RIGHT</th><th>نسبة RIGHT</th></tr></thead>
+    <tbody>
+      <tr><td>كل الملفات</td><td class="n">1082</td><td class="n">1078</td><td class="n">49.9%</td></tr>
+      <tr><td>بعد الـ artifact rejection</td><td class="n">948</td><td class="n">943</td><td class="n">49.9%</td></tr>
+      <tr><td>الداتا النهائية (بعد شيل الـ duplicates)</td><td class="n">916</td><td class="n">915</td><td class="n">50.0%</td></tr>
+    </tbody>
+  </table></div>
+  <ul>
+    <li><b>ما احتجناش oversampling ولا class weights:</b> الـ classes متوازنة تقريبًا 50/50 من الأول، والتاسك نفسه بيقول "aim for roughly equal".</li>
+    <li><b>اتأكدنا إن كل خطوة شيل ما بوّظتش التوازن:</b> الـ artifact rejection شال نفس النسبة من الاتنين (p = 0.97).</li>
+    <li><b>الـ folds نفسها متوازنة:</b> استخدمنا Stratified split، فنسبة RIGHT في كل test fold بين 48% و51%.</li>
+    <li><b>وبرضه حسبنا Balanced Accuracy:</b> عشان لو موديل اختار class واحد على طول، الـ balanced accuracy تفضحه.</li>
+  </ul>
+  <div class="warn">التوازن بيقول إن العدد مظبوط، بس <b>ما بيقولش</b> إن كل label صح. دي مشكلة تانية خالص، وهنشوفها في قسم 08.</div>
+</section>
+
+<!-- 07 -->
+<section id="removed">
+  <h2>07 · مسحنا إيه من الداتا وليه</h2>
+  <div class="funnel" aria-label="عدد الـ trials في كل مرحلة">
+    <div class="bar"><i style="width:100%"></i><span><b>2160</b> <small>كل الملفات</small></span></div>
+    <div class="bar"><i style="width:87.5%"></i><span><b>1891</b> <small>بعد الـ artifacts</small></span></div>
+    <div class="bar"><i style="width:84.8%"></i><span><b>1831</b> <small>بعد الـ duplicates</small></span></div>
+  </div>
+  <div class="table"><table>
+    <thead><tr><th>اللي اتشال</th><th>العدد</th><th>ليه</th><th>عرفناه ازاي</th></tr></thead>
+    <tbody>
+      <tr><td>labels زيادة</td><td class="n">240</td><td>مالهاش ملفات (2400 label و2160 ملف بس)</td><td>عدّينا الاتنين</td></tr>
+      <tr><td>trials فيها artifacts</td><td class="n">269</td><td>رمش، أو عضلات، أو قطب مفصول، أو جهاز بيكرر قيم. دي مش نشاط مخ</td><td>المقاييس الـ 3 والحدود اللي اتحسبت من الداتا (Step 4)</td></tr>
+      <tr><td>ملفات مكررة</td><td class="n">60</td><td>نفس الإشارة بالظبط في ملفين، وأغلبهم بـ labels متعارضة</td><td>بصمة (hash) لكل إشارة (قسم 08)</td></tr>
+      <tr><td>أول ثانية وآخر ثانية من كل trial</td><td>من كل الـ trials</td><td>الفلتر بيحنيهم (edge effect)</td><td>رسمة قوة mu مع الوقت (Step 6)</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<!-- 08 -->
+<section id="dups">
+  <h2>08 · الـ Duplicates: اكتشفناها ازاي وتعاملنا معاها ازاي</h2>
+  <h3>اكتشفناها ازاي</h3>
+  <ol>
+    <li>لكل ملف حسبنا <b>بصمة (MD5 hash)</b> لقيم الإشارة. لو ملفين ليهم نفس البصمة، يبقى الإشارة فيهم متطابقة رقم برقم.</li>
+    <li>وفي <code>pi.ipynb</code> لاحظنا قبل كده إن فيه trials بتبدأ قبل ما اللي قبلها تخلص بـ 10 ثواني، لما رتّبناهم بالوقت الحقيقي. ده كان أول إشارة إن فيه نسخ.</li>
+  </ol>
+  <p>النتيجة: <b>36 زوج</b> (72 ملف) متطابقين تمامًا. مثلًا <code>cellula_MI_data_42</code> = <code>cellula_MI_data_1077</code>، و <code>671</code> = <code>1319</code>، وغالبًا بلوكات كاملة من 9 trials متنسخة.</p>
+  <h3>ليه دي مشكلة كبيرة</h3>
+  <p>لو الـ labels صح، كل نسختين لازم ياخدوا <b>نفس الـ label</b>، يعني 100% اتفاق، لأنهم نفس التسجيل بالظبط. اللي لقيناه: <b>12 بس من 36 (33%)</b> اتفقوا. والـ 24 الباقيين واحد مكتوب LEFT والتاني RIGHT لنفس الإشارة.</p>
+  <h3>جرّبنا نصلّحها: هل الـ labels بس متزحلقة؟</h3>
+  <p>عندنا 2400 label لـ 2160 ملف. يمكن الترتيب متزحلق كام صف؟ جرّبنا كل إزاحة من −240 لـ +240، وفي كل مرة حسبنا كام زوج هيتفق. أحسن إزاحة (+120) وصلت <b>72%</b> بس، ومفيش ولا إزاحة وصلت 100%. يعني المشكلة مش مجرد إزاحة، ومش هنقدر نصلّحها من الداتا.</p>
+  <h3>تعاملنا معاها ازاي</h3>
+  <div class="table"><table>
+    <thead><tr><th>الحالة</th><th>عملنا إيه</th><th>ليه</th></tr></thead>
+    <tbody>
+      <tr><td>نسختين بـ labels <b>مختلفة</b> (24 زوج)</td><td>شلنا <b>الاتنين</b></td><td>مش عارفين مين فيهم الصح، ولو سبناهم الموديل هيشوف نفس الإشارة مرة LEFT ومرة RIGHT</td></tr>
+      <tr><td>نسختين بـ labels <b>متطابقة</b> (12 زوج)</td><td>سبنا نسخة واحدة</td><td>لو نسخة وقعت في الـ train ونسخة في الـ test، الموديل هيبان أشطر من الحقيقة (data leakage)</td></tr>
+    </tbody>
+  </table></div>
+  <p>والقائمة كاملة محفوظة في <code>duplicates.csv</code> عشان نبعتها للفريق.</p>
+</section>
+
+<!-- 09 -->
+<section id="problem">
+  <h2>09 · ازاي اتأكدنا إن فيه مشكلة في الداتا أصلًا؟</h2>
+  <p>ما اعتمدناش على دليل واحد. ده تسلسل الأدلة بالترتيب اللي ظهرت بيه:</p>
+  <ol class="chain">
+    <li><div><b>الـ EDA ما لقاش فرق بين LEFT و RIGHT.</b> أكبر effect size في كل المقارنات كان <span class="num">0.061</span>، وأقل حاجة بتتسمى "صغيرة" هي 0.2. وولا مقارنة من الـ 8 في الـ PSD كانت significant، ونصهم بس في الاتجاه المتوقع. وقاعدة التاسك 3.3 بتقول: لو مفيش فرق، ارجعوا راجعوا جودة الداتا.</div></li>
+    <li><div><b>الـ sessions مأثرة أكتر بكتير من الـ class.</b> فرق الـ session بيفسّر <span class="num">39%</span> من الاختلاف في قوة mu على C3، والـ label بيفسّر <span class="num">0.07%</span> بس، يعني حوالي 500 مرة أقل.</div></li>
+    <li><div><b>ملفات مكررة بـ labels متعارضة:</b> 24 من 36 زوج.</div></li>
+    <li><div><b>الـ labels مش مجرد متزحلقة:</b> مفيش إزاحة بتصلّحها.</div></li>
+    <li><div><b>كل الموديلات حوالي 50%:</b> 3 موديلات مختلفة تمامًا في طريقة شغلها، والـ 3 جابوا نفس النتيجة.</div></li>
+    <li><div><b>Labels عشوائية بتجيب نفس النتيجة:</b> لما لخبطنا الـ labels بشكل عشوائي ودرّبنا تاني، الـ AUC كان <span class="num">0.494</span> في المتوسط، والـ labels الحقيقية جابت <span class="num">0.502</span>. يعني الـ labels الحقيقية مش أحسن من العشوائية (p = 0.29).</div></li>
+    <li><div><b>الـ CSP+SVM مش قادر يتعلم حتى بيانات التدريب:</b> دقته على الـ train نفسه <span class="num">0.494</span>. لو كان فيه pattern، على الأقل كان هيحفظه.</div></li>
+    <li><div><b>المشكلة مش في الكود:</b> نسختين من الـ pipeline اتكتبوا لوحدهم (<code>pi.ipynb</code> و <code>BCI_MI_Pipeline.ipynb</code>) وطلّعوا نفس الأرقام بالظبط (269 trial اتشالت، ونفس الـ effect sizes).</div></li>
+  </ol>
+  <div class="warn"><b>الاستنتاج:</b> الـ processing سليم، والموديلات سليمة. الأرجح إن <code>labels.csv</code> مش متوصّل بالملفات صح، فالموديل بيحاول يتعلم إجابات مالهاش علاقة بالإشارة.</div>
+</section>
+
+<!-- 10 -->
+<section id="features">
+  <h2>10 · الـ Features اللي استخدمناها وليه</h2>
+  <p>الـ feature هي رقم بيلخّص حاجة مهمة في الـ trial. والـ trial الواحدة فيها 4 × 2000 = 8000 رقم. ما ينفعش نديها كده لموديل بسيط، ومعظم الأرقام دي ضوضاء أصلًا.</p>
+  <h3>Features في الـ EDA (عشان نفهم)</h3>
+  <ul>
+    <li><b>Band power:</b> متوسط القوة في mu (8–12) وفي beta (13–30) لكل قناة، ومحسوب بطريقة <b>Welch PSD</b>: بتقسم الإشارة لشبابيك 2 ثانية، وتحسب الترددات في كل شباك، وتاخد المتوسط، فالنتيجة بتبقى أهدى. وبناخد الـ log لأن القوة بتتوزع بشكل مايل جدًا.</li>
+    <li><b>Lateralization index:</b> <code>LI = (C4 − C3) / (C4 + C3)</code>. رقم واحد بيقول أنهي نص من المخ أضعف. المفروض LI يبقى أقل في LEFT وأعلى في RIGHT.</li>
+  </ul>
+  <h3>Features الموديل الأساسي: CSP (Common Spatial Patterns)</h3>
+  <ol>
+    <li>بنفلتر الأول على <b>8–30 Hz</b> بس (mu + beta)، وده الاختيار التاني اللي التاسك اقترحه ("tighter 8–30 Hz").</li>
+    <li>الـ CSP بيدوّر على <b>خلطات من الـ 4 قنوات</b> (أوزان)، بحيث كل خلطة قوتها تبقى كبيرة جدًا في class وصغيرة جدًا في التاني. يعني بدل ما إحنا نقارن C3 بـ C4 بإيدينا، هو بيلاقي أحسن مقارنة لوحده.</li>
+    <li>لكل خلطة بنحسب <b>log-variance</b>، وده نفس القوة بالظبط. فكل trial بتبقى <b>4 أرقام بس</b>، ودي الـ "feature matrix" اللي التاسك طالبها.</li>
+    <li>الـ CSP اتعلم من بيانات الـ <b>train بس</b> في كل fold. لو اتعلم من كل الداتا كان هيشوف الـ test، وده leakage.</li>
+  </ol>
+  <p><b>لاحظنا:</b> في fold 1، الـ features فرّقت شوية على الـ test (d من 0.14 لـ 0.23) بس <b>صفر</b> على الـ train (من −0.06 لـ +0.02). ده عكس المنطقي، ومع حجم test بتاع 344 trial التذبذب ده عادي بالصدفة. ما ثبتش في باقي الـ folds.</p>
+  <h3>الموديلات العميقة: مفيش features بإيدينا</h3>
+  <p>الـ EEGNet والـ CNN-LSTM بياخدوا الـ epoch نفسها (بعد ما خفّضنا الـ rate لـ 125 Hz وعملنا z-score) وبيتعلموا الـ features لوحدهم. الـ EEGNet بالذات متصمم إن طبقاته تشبه الطريقة الكلاسيك: فلتر زمني (زي الـ band-pass)، وبعده فلتر مكاني (زي الـ CSP).</p>
+  <p><b>ليه نزّلنا لـ 125 Hz؟</b> الـ EEGNet متصمم حوالين 128 Hz، وأعلى تردد عندنا 40 Hz، وده أقل بكتير من الحد الجديد (62.5 Hz). فمش بنخسر أي معلومة، والتدريب بيبقى أسرع مرتين.</p>
+</section>
+
+<!-- 11 -->
+<section id="cv">
+  <h2>11 · الـ Cross-validation (subject-aware زي ما التاسك قال)</h2>
+  <p>التاسك بيقول: <i>"Always use subject-aware cross-validation so the model is not tested on the same person's data it was trained on."</i></p>
+  <ul>
+    <li><b>مشكلة:</b> مفيش أي عمود بيقول مين الشخص.</li>
+    <li><b>الحل:</b> من الوقت الحقيقي في عمود <code>Time</code> طلّعنا <b>80 session</b> على مدار 19.4 يوم. أي فجوة أكتر من 60 ثانية بين trial واللي بعدها معناها session جديدة. وكل session عدد الـ trials فيها مضاعف 9، والـ trials جوه الـ session ورا بعض على طول (الفجوة 0 ثانية).</li>
+    <li><b>ليه ده مهم:</b> لو قسّمنا عشوائي، trials من نفس الـ session هتبقى في الـ train والـ test مع بعض. الـ session ليها "بصمة" قوية (قسم 09)، فالموديل ممكن يتعلم البصمة ويبان شاطر وهو مش شاطر.</li>
+    <li><b>عملنا:</b> <code>StratifiedGroupKFold</code> بـ 5 folds. مفيش session بتظهر في الـ train والـ test مع بعض (اتأكدنا: 0)، والـ LEFT/RIGHT متوازنين في كل fold. و<b>نفس الـ folds بالظبط لكل الموديلات</b>، زي ما التاسك قال، عشان المقارنة تبقى عادلة.</li>
+    <li><b>Early stopping:</b> في الموديلات العميقة خدنا 15% من <b>sessions الـ train</b> كـ validation. الـ test fold ما اتلمسش في أي قرار.</li>
+  </ul>
+</section>
+
+<!-- 12 -->
+<section id="models">
+  <h2>12 · الـ Modeling: من الـ Baseline لحد CNN-LSTM</h2>
+  <p>التاسك قال نبدأ بحاجة بسيطة وقوية، ونكبّر بالترتيب ده: <b>Priority 1</b> CSP+SVM، وبعده <b>2</b> EEGNet، وبعده <b>3</b> CNN/CNN-LSTM، وأخيرًا <b>4</b> Transformer.</p>
+
+  <article class="step">
+    <div class="step-head"><span class="tag">Priority 1 · Baseline</span><h3>CSP + Linear SVM</h3></div>
+    <dl class="kv">
+      <dt>الموديل</dt><dd>4 features من الـ CSP، وبعدين <code>StandardScaler</code>، وبعدين <b>Linear SVM</b> بيدّي احتمال (probability).</dd>
+      <dt>ليه ده الأول</dt><dd>التاسك قال: "strong classic method, implement first, easy to interpret". وهو سريع جدًا (19 ثانية للـ 5 folds).</dd>
+      <dt>ليه Linear SVM</dt><dd>عندنا 4 features وداتا قليلة، فموديل بسيط بخط مستقيم هو الأنسب، والموديل المعقد هنا هيحفظ الداتا بس. والـ SVM بيدوّر على الخط اللي بيفصل الـ classes بأكبر مسافة.</dd>
+      <dt>النتيجة</dt><dd>Balanced Acc <span class="num">0.508 ± 0.021</span>، AUC <span class="num">0.504 ± 0.029</span>.</dd>
+      <dt>لاحظنا</dt><dd>
+        <ul>
+          <li>دقته على <b>بيانات التدريب نفسها 0.494</b>. يعني مش overfitting، هو مش لاقي حاجة يتعلمها أصلًا.</li>
+          <li>بيميل لـ RIGHT: صح في 62% من الـ RIGHT و40% بس من الـ LEFT.</li>
+          <li>الـ F1 بيتنطط من fold للتاني (من 0.24 لـ 0.64)، لأن الموديل بيقلب ميله من class للتاني على حسب الـ fold.</li>
+          <li>نسخة الـ CAR نفس الكلام (AUC 0.497).</li>
+        </ul></dd>
+    </dl>
+  </article>
+
+  <article class="step">
+    <div class="step-head"><span class="tag">Priority 2</span><h3>EEGNet</h3></div>
+    <dl class="kv">
+      <dt>ليه جرّبناه</dt><dd>الـ baseline مش لاقي pattern في الـ features الخطية. يمكن الـ pattern مش خطي، ومحتاج موديل يتعلم الـ features لوحده. والتاسك قال عنه: "designed specifically for EEG, few parameters".</dd>
+      <dt>الموديل</dt><dd>شبكة صغيرة جدًا فيها <span class="num">2,162</span> parameter بس. صغرها مقصود عشان الداتا قليلة. طبقاته: فلتر زمني، وبعده فلتر مكاني على الـ 4 قنوات، وبعده فلتر separable، وبعده الـ classifier.</dd>
+      <dt>التدريب</dt><dd><b>Adam</b> (بيضبط سرعة التعلم لكل وزن لوحده)، و learning rate 0.001، و batch 32، و<b>Cross-entropy loss</b>، ولحد 40 epoch مع <b>early stopping</b>: لو الـ validation loss ما اتحسنش 8 epochs ورا بعض بنوقف ونرجع لأحسن نسخة.</dd>
+      <dt>النتيجة</dt><dd>Balanced Acc <span class="num">0.496</span>، AUC <span class="num">0.502</span>. وقف بعد 9 لـ 16 epoch، وأحسن epoch كانت ما بين 1 و 8.</dd>
+      <dt>لاحظنا</dt><dd>دقة الـ train طلعت لحوالي <b>0.59</b>، والـ validation فضلت حوالي 0.52، والـ validation loss بدأ يطلع من أول epoch أو اتنين. يعني الموديل بيحفظ الـ trials مش بيتعلم. ولما درّبناه على labels عشوائية، وصل لدقة train <b>0.554</b>، قريبة جدًا من الـ 0.594. فحتى الـ 0.59 دي حفظ مش تعلّم.</dd>
+    </dl>
+  </article>
+
+  <article class="step">
+    <div class="step-head"><span class="tag">Priority 3</span><h3>CNN-LSTM</h3></div>
+    <dl class="kv">
+      <dt>ليه</dt><dd>التاسك قال: "use if EEGNet is not enough"، والـ EEGNet فعلًا ما كفّاش.</dd>
+      <dt>الموديل</dt><dd>طبقتين <b>1-D convolution</b> بيتعلموا patterns قصيرة وبيقصّروا الإشارة 16 مرة، وبعدين <b>LSTM</b> بيقرا الـ patterns دي بتتغير ازاي على مدار الـ 8 ثواني. فيه <span class="num">12,690</span> parameter.</dd>
+      <dt>النتيجة</dt><dd>Balanced Acc <span class="num">0.479</span>، AUC <span class="num">0.491</span>. حتى أقل من 50% شوية، ودي صدفة.</dd>
+    </dl>
+  </article>
+
+  <article class="step">
+    <div class="step-head"><span class="tag">Priority 4 · Optional</span><h3>Transformer: ما عملناهوش، والسبب</h3></div>
+    <p>التاسك قال: "only if time and data allow". والداتا ما تسمحش: عندنا 1831 trial بس، والـ Transformer محتاج آلاف أكتر. وأهم من كده، 3 موديلات مختلفة كلهم لقوا صفر إشارة، والموديلات المرنة بتحفظ الـ labels العشوائية. فموديل أكبر هيحفظ أكتر، مش هيتعلم أكتر.</p>
+  </article>
+</section>
+
+<!-- 13 -->
+<section id="decide">
+  <h2>13 · قررنا نغيّر الموديل بناءً على إيه؟ ووقفنا ليه؟</h2>
+  <p>القرار كان بيعتمد على مقارنة دقة الـ <b>train</b> بدقة الـ <b>test</b>:</p>
+  <div class="table"><table>
+    <thead><tr><th>اللي بنشوفه</th><th>معناه</th><th>الخطوة الصح</th><th>حصل عندنا فين</th></tr></thead>
+    <tbody>
+      <tr><td>train واطي و test واطي</td><td>Underfitting: الموديل بسيط زيادة، أو مفيش إشارة أصلًا</td><td>نجرّب موديل أمرن</td><td>CSP+SVM (train 0.494)، فانتقلنا لـ EEGNet</td></tr>
+      <tr><td>train عالي و test واطي</td><td>Overfitting: بيحفظ</td><td>regularization، أو داتا أكتر، أو early stopping</td><td>EEGNet (train 0.59، test 0.50)، فاستخدمنا early stopping، وجرّبنا CNN-LSTM</td></tr>
+      <tr><td>نفس النتيجة بالـ labels الحقيقية والعشوائية</td><td>مفيش علاقة بين الإشارة والـ labels</td><td><b>نوقف تغيير الموديل ونصلّح الداتا</b></td><td>الـ 3 موديلات</td></tr>
+    </tbody>
+  </table></div>
+  <div class="note">التاسك نفسه بيقول في الآخر: <i>"A clean CSP+SVM that reaches good accuracy is more valuable than a complex model trained on noisy data."</i> وعشان كده وقفنا عند Priority 3 وما كبّرناش الموديل أكتر.</div>
+</section>
+
+<!-- 14 -->
+<section id="metrics">
+  <h2>14 · المقاييس والنتايج النهائية</h2>
+  <div class="table"><table>
+    <thead><tr><th>المقياس</th><th>بيقيس إيه</th><th>ليه محتاجينه</th></tr></thead>
+    <tbody>
+      <tr><td>Accuracy</td><td>نسبة الإجابات الصح</td><td>أبسط مقياس، بس ممكن يضحك علينا لو الـ classes مش متوازنة</td></tr>
+      <tr><td>Balanced Accuracy</td><td>متوسط نسبة الصح في LEFT ونسبة الصح في RIGHT</td><td>بيفضح الموديل اللي بيختار class واحد على طول</td></tr>
+      <tr><td>F1-score</td><td>توازن بين precision و recall للـ RIGHT</td><td>بيبيّن لو الموديل بيفوّت أو بيبالغ في class</td></tr>
+      <tr><td>Confusion matrix</td><td>جدول بيقول اتلخبط فين بالظبط</td><td>بيورّينا الميل لـ RIGHT في الـ CSP+SVM</td></tr>
+      <tr><td>AUC</td><td>هل الاحتمالات بترتّب الـ RIGHT فوق الـ LEFT؟ 0.5 = عشوائي و 1 = مثالي</td><td>ما بيعتمدش على threshold الـ 0.5</td></tr>
+      <tr><td>Permutation test</td><td>نعيد التدريب بـ labels عشوائية ونقارن</td><td>بيقول الموديل أحسن من الصدفة فعلًا ولا لأ</td></tr>
+      <tr><td>Binomial test</td><td>هل عدد الإجابات الصح أكبر من رمي عملة؟</td><td>اختبار تاني مستقل لنفس السؤال</td></tr>
+    </tbody>
+  </table></div>
+  <div class="table"><table>
+    <thead><tr><th>Model</th><th>Accuracy</th><th>Balanced Acc</th><th>F1</th><th>AUC</th><th>Train acc</th><th>AUC بـ labels عشوائية</th></tr></thead>
+    <tbody>
+      <tr><td>CSP + SVM</td><td class="n">0.509 ± 0.030</td><td class="n">0.508 ± 0.021</td><td class="n">0.505 ± 0.179</td><td class="n">0.504 ± 0.029</td><td class="n">0.494</td><td class="n">0.494 (n=30, p=0.29)</td></tr>
+      <tr><td>EEGNet</td><td class="n">0.495 ± 0.012</td><td class="n">0.496 ± 0.012</td><td class="n">0.497 ± 0.024</td><td class="n">0.502 ± 0.019</td><td class="n">0.594</td><td class="n">0.485 (n=1)</td></tr>
+      <tr><td>CNN-LSTM</td><td class="n">0.481 ± 0.031</td><td class="n">0.479 ± 0.030</td><td class="n">0.457 ± 0.082</td><td class="n">0.491 ± 0.036</td><td class="n">0.524</td><td class="n">0.465 (n=1)</td></tr>
+    </tbody>
+  </table></div>
+  <p>الأرقام دي متوسط ± انحراف معياري على 5 folds مقسّمة بالـ session. واختبار الـ binomial: ولا موديل أحسن من رمي العملة (p = 0.24 و 0.68 و 0.95).</p>
+</section>
+
+<!-- 15 -->
+<section id="methods">
+  <h2>15 · كل الـ methods اللي استخدمناها</h2>
+  <div class="table"><table>
+    <thead><tr><th>الـ Method</th><th>استخدمناها فين</th><th>ليه</th></tr></thead>
+    <tbody>
+      <tr><td>Butterworth + <code>filtfilt</code></td><td>Step 2</td><td>فلتر ناعم من غير ما يزحلق الإشارة في الزمن</td></tr>
+      <tr><td><code>iirnotch</code></td><td>Step 3</td><td>يشيل الـ 50 Hz بس</td></tr>
+      <tr><td>IQR outlier rule</td><td>Step 4</td><td>حدود الـ artifacts من الداتا نفسها</td></tr>
+      <tr><td>CAR</td><td>Step 5</td><td>يشيل الضوضاء المشتركة بين القنوات</td></tr>
+      <tr><td>Welch PSD</td><td>Steps 3 و 6، والـ EDA</td><td>قوة كل تردد بشكل هادي</td></tr>
+      <tr><td>Cohen's d، و t-test، و Mann-Whitney</td><td>EDA 3.2</td><td>حجم الفرق بين LEFT و RIGHT، وهل هو حقيقي</td></tr>
+      <tr><td>Chi-square</td><td>Step 4</td><td>هل الـ rejection ظلم class؟</td></tr>
+      <tr><td>Eta² (η²)</td><td>EDA 3.4.4</td><td>الـ session بتفسّر قد إيه مقارنة بالـ label</td></tr>
+      <tr><td>MD5 hashing</td><td>EDA 3.4.2</td><td>نلاقي الملفات المتطابقة</td></tr>
+      <tr><td>Binomial test</td><td>EDA 3.4.2 والـ Evaluation</td><td>نقارن بالصدفة</td></tr>
+      <tr><td>StratifiedGroupKFold و GroupShuffleSplit</td><td>CV والـ validation</td><td>Split حسب الـ session مع توازن الـ classes</td></tr>
+      <tr><td>CSP (<code>mne</code>)</td><td>Features</td><td>أقوى feature كلاسيك للـ motor imagery</td></tr>
+      <tr><td>StandardScaler و Linear SVM</td><td>Priority 1</td><td>Classifier بسيط ومناسب لـ 4 features</td></tr>
+      <tr><td>EEGNet و CNN-LSTM (<code>PyTorch</code>)</td><td>Priorities 2 و 3</td><td>بيتعلموا الـ features لوحدهم</td></tr>
+      <tr><td>Adam، و Cross-entropy، و Early stopping، و Dropout، و BatchNorm</td><td>تدريب الموديلات العميقة</td><td>تدريب مستقر ويقلل الحفظ</td></tr>
+      <tr><td>Permutation test</td><td>Evaluation</td><td>نعرف هل الموديل اتعلم حاجة حقيقية</td></tr>
+      <tr><td><code>joblib</code> و <code>torch.save</code></td><td>Deployment</td><td>حفظ الموديلات زي ما التاسك قال</td></tr>
+      <tr><td>Streamlit</td><td>Deployment</td><td>أسرع demo، والتاسك رشّحه</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<!-- 16 -->
+<section id="deploy">
+  <h2>16 · الـ Deployment</h2>
+  <ul>
+    <li><b>ليه Streamlit:</b> التاسك رشّحه لأول demo. ملف Python واحد بيعمل الشغل كله، و Flask و Django أتقل من اللازم لـ demo.</li>
+    <li><b>حفظنا الموديلات:</b> <code>csp_svm.joblib</code>، و <code>eegnet.pt</code>، و <code>cnn_lstm.pt</code>، ومعاهم <code>model_card.json</code> فيه رقم الـ version، والـ config بالظبط، وحدود الـ artifacts، ونتايج الـ CV، والتحذير.</li>
+    <li><b>نفس الـ preprocessing في التدريب والـ app:</b> الاتنين بيستخدموا <code>bci_pipeline.py</code>. واتأكدنا إن الاحتمال اللي الـ app بيطلّعه هو نفسه اللي في الـ notebook لكل موديل (True).</li>
+    <li><b>الـ app بيعمل إيه:</b> بتعمل upload لـ trial (CSV أو Excel) أو تدوس زرار <b>example trial</b>. بيعمل فحص جودة بنفس حدود Step 4، وبعدين نفس الـ preprocessing، وبيطلّع <b>LEFT أو RIGHT ومعاه الـ confidence</b>، وبيرسم الإشارة، وبيعرض نتايج الـ CV والتحذير.</li>
+    <li><b>الموديل الافتراضي:</b> CSP + SVM، لأنه أعلى AUC (0.504)، وهو الـ baseline اللي التاسك بيفضّله. بس كلهم عند مستوى الصدفة، والـ app بيقول ده صراحة.</li>
+  </ul>
+  <p>التشغيل من فولدر <code>final_pipeline</code>: <code>streamlit run app.py</code>، أو من آخر خلايا الـ notebook.</p>
+</section>
+
+<!-- 17 -->
+<section id="end">
+  <h2>17 · الخلاصة والخطوة الجاية</h2>
+  <div class="okbox"><b>اللي اتعمل صح:</b> نفّذنا كل خطوات التاسك بالترتيب. وكل اختيار مبني على رقم من الداتا. والـ pipeline اتأكدنا منه بنسختين مستقلتين، وفي الآخر عندنا app شغال.</div>
+  <div class="warn"><b>اللي مش في إيدينا:</b> الـ labels مش متوصّلة بالملفات صح، فمفيش موديل هيقدر يتعلم.</div>
+  <h3>المطلوب من الفريق عشان المشروع يكمّل</h3>
+  <ol>
+    <li>ملف labels فيه <b>اسم الملف جنب الـ label</b>.</li>
+    <li>Subject ID لكل trial، عشان نعمل subject-aware CV حقيقي.</li>
+    <li>لو موجود: توقيت الـ cue جوه كل trial، عشان نقص الشباك الصح (0.5–3.5 ثانية) زي ما التاسك قال.</li>
+  </ol>
+  <p>لما الحاجات دي توصل، الـ pipeline كله هيشتغل زي ما هو من غير أي تغيير: نغيّر ملف الـ labels ونعمل Run All.</p>
+</section>
+
+<!-- 18 -->
+<section id="qa">
+  <h2>18 · أسئلة متوقعة في العرض</h2>
+  <details><summary>ليه الدقة 50%؟ ما كانش ممكن تجربوا موديل أقوى؟</summary><div><p>جرّبنا 3 موديلات مختلفة في طريقة شغلها، والـ 3 جابوا نفس النتيجة. والأهم: لما درّبنا على labels عشوائية جبنا نفس النتيجة بالظبط. معنى كده إنه مفيش علاقة بين الإشارة والـ labels تتعلم أصلًا، فمفيش موديل هيحلها. وعندنا 24 زوج ملفات متطابقة بـ labels متعارضة كدليل مباشر.</p></div></details>
+  <details><summary>إيه اللي يضمن إن المشكلة مش في الـ preprocessing بتاعكم؟</summary><div><p>كل خطوة ليها دليل رقمي: الـ 50 Hz اتشالت (من 3.4 مليون لـ 6)، وقوة mu ما اتغيرتش (508 قبل وبعد). ونسختين من الكود مكتوبين لوحدهم طلّعوا نفس النتايج بالظبط. وكمان مشكلة الـ duplicates موجودة في الملفات الخام قبل أي processing.</p></div></details>
+  <details><summary>ليه ما قسمتوش الداتا عشوائي 80/20؟</summary><div><p>عشان الـ trials اللي في نفس الـ session متشابهة جدًا: الـ session بتفسّر 39% من الاختلاف. لو حطيناهم في الـ train والـ test مع بعض، الموديل هيبان أحسن من الحقيقة. والتاسك نفسه طالب subject-aware CV.</p></div></details>
+  <details><summary>ليه ما استخدمتوش الـ CAR مع إن التاسك قاله؟</summary><div><p>استخدمناه وجرّبناه. مع 4 أقطاب بس بيدخّل C3 في C4، وبيخلي الارتباط بين القنوات سالب، وما حسّنش النتيجة (AUC 0.497 مقابل 0.504). فاحتفظنا بالنسختين وقرّرنا بالأرقام.</p></div></details>
+  <details><summary>ليه الشباك 1–9 ثواني مش 0.5–3.5 زي التاسك؟</summary><div><p>الـ 0.5–3.5 محسوبة من لحظة الـ cue، والملفات مفيهاش cue. أول وآخر ثانية الفلتر بيحنيهم (قوة mu فيهم أعلى بكتير من الطبيعي)، والباقي ثابت، فخدنا كل الجزء النضيف.</p></div></details>
+  <details><summary>ليه ما عملتوش normalization للـ CSP؟</summary><div><p>الـ CSP بيدوّر على الفرق في القوة (variance) بين القنوات. لو خلينا الـ std بتاع كل قناة 1، هنمسح الفرق ده بإيدينا.</p></div></details>
+  <details><summary>الـ EEGNet وصل 59% على الـ train، مش ده أحسن؟</summary><div><p>ده حفظ مش تعلّم: على الـ test جاب 50%. ولما درّبناه على labels عشوائية وصل لـ 55% على الـ train. فالموديل المرن بيقدر يحفظ أي labels، حتى العشوائية.</p></div></details>
+  <details><summary>شلتوا كام trial وده أثّر على النتيجة؟</summary><div><p>شلنا 269 artifact (12.5%) و60 ملف مكرر، والباقي 1831. كل trial اتشالت متسجلة مع سببها. والشيل كان بنفس النسبة من الـ classes الاتنين، فما أثّرش على التوازن.</p></div></details>
+  <details><summary>لو جالكم labels صح، هتعملوا إيه؟</summary><div><p>نحط ملف الـ labels الجديد ونعمل Run All. الـ pipeline كله متظبط على config واحد، والـ app هيستخدم الموديل الجديد على طول.</p></div></details>
+</section>
+
+<footer>
+  الأرقام كلها من تشغيل <code>final_pipeline/BCI_MI_Pipeline.ipynb</code>. الملفات: <code>config.json</code> (الإعدادات) و<code>bci_pipeline.py</code> (كود الـ preprocessing المشترك) و<code>app.py</code> (الـ demo) و<code>outputs/</code> (الـ arrays والـ CSVs) و<code>models/</code> (الموديلات والـ model card).
+</footer>
+
+</main>
+</div>
+
+<script>
+// decorative EEG-like traces in the header: same noise, RIGHT trace shows a small mu drop in the middle
+(function () {
+  function trace(seed, drop) {
+    var d = "", s = seed;
+    function rnd() { s = (s * 9301 + 49297) % 233280; return s / 233280 - 0.5; }
+    for (var x = 0; x <= 900; x += 3) {
+      var mu = Math.sin(x * 0.35) * (drop && x > 380 && x < 620 ? 5 : 11);
+      var y = 28 + mu + rnd() * 8 + Math.sin(x * 0.04) * 3;
+      d += (x === 0 ? "M" : "L") + x + " " + y.toFixed(1);
+    }
+    return d;
+  }
+  var l = document.getElementById("trL"), r = document.getElementById("trR");
+  if (l) l.setAttribute("d", trace(7, false));
+  if (r) r.setAttribute("d", trace(31, true));
+})();
+</script>

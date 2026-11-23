@@ -1,0 +1,27 @@
+# Dark "lab" theme for the BCI demo.
+# LEFT = blue, RIGHT = orange everywhere (charts, hands, badges); violet is only the UI accent.
+[theme]
+base = "dark"
+primaryColor = "#8b7cf6"
+backgroundColor = "#0b1020"
+secondaryBackgroundColor = "#141a2e"
+codeBackgroundColor = "#10162a"
+textColor = "#e6e8f0"
+linkColor = "#a99cff"
+borderColor = "#262d47"
+showWidgetBorder = true
+showSidebarBorder = true
+baseRadius = "10px"
+buttonRadius = "10px"
+font = "'Inter':https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+headingFont = "'Space Grotesk':https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&display=swap"
+headingFontWeights = [700, 600, 600, 600, 500, 500]
+chartCategoricalColors = ["#3987e5", "#d95926", "#199e70", "#c98500"]
+blueColor = "#3987e5"
+orangeColor = "#d95926"
+violetColor = "#8b7cf6"
+
+[theme.sidebar]
+backgroundColor = "#0f152a"
+secondaryBackgroundColor = "#141a2e"
+borderColor = "#262d47"

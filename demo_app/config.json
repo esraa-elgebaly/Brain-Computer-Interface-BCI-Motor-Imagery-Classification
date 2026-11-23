@@ -1,0 +1,43 @@
+{
+  "project": "BCI Motor Imagery Classification (LEFT vs RIGHT)",
+  "pipeline_version": "1.0.0",
+
+  "data": {
+    "trial_glob": "../MI-*/**/cellula_MI_data_*.csv",
+    "labels_csv": "../labels.csv"
+  },
+
+  "fs": 250,
+  "trial_seconds": 10,
+  "channels": ["FZ", "C3", "CZ", "C4"],
+  "class_names": ["LEFT", "RIGHT"],
+
+  "bandpass_hz": [0.5, 40],
+  "notch_hz": 50,
+  "notch_q": 30,
+
+  "artifact": {
+    "edge_seconds": 1.0,
+    "iqr_factor": 3,
+    "flat_share_limit": 0.10
+  },
+
+  "use_car": false,
+  "epoch_seconds": [1.0, 9.0],
+
+  "csp_band_hz": [8, 30],
+  "csp_components": 4,
+
+  "dl_downsample": 2,
+  "dl": {
+    "max_epochs": 40,
+    "batch_size": 32,
+    "learning_rate": 0.001,
+    "patience": 8,
+    "val_share": 0.15
+  },
+
+  "session_gap_seconds": 60,
+  "cv_folds": 5,
+  "random_seed": 42
+}

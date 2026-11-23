@@ -1,0 +1,103 @@
+{
+  "pipeline_version": "1.0.0",
+  "created": "2026-11-23T20:02:36",
+  "preprocessing_code": "bci_pipeline.py (preprocess, csp_input, dl_input)",
+  "config": {
+    "project": "BCI Motor Imagery Classification (LEFT vs RIGHT)",
+    "pipeline_version": "1.0.0",
+    "data": {
+      "trial_glob": "../MI-*/**/cellula_MI_data_*.csv",
+      "labels_csv": "../labels.csv"
+    },
+    "fs": 250,
+    "trial_seconds": 10,
+    "channels": [
+      "FZ",
+      "C3",
+      "CZ",
+      "C4"
+    ],
+    "class_names": [
+      "LEFT",
+      "RIGHT"
+    ],
+    "bandpass_hz": [
+      0.5,
+      40
+    ],
+    "notch_hz": 50,
+    "notch_q": 30,
+    "artifact": {
+      "edge_seconds": 1.0,
+      "iqr_factor": 3,
+      "flat_share_limit": 0.1
+    },
+    "use_car": false,
+    "epoch_seconds": [
+      1.0,
+      9.0
+    ],
+    "csp_band_hz": [
+      8,
+      30
+    ],
+    "csp_components": 4,
+    "dl_downsample": 2,
+    "dl": {
+      "max_epochs": 40,
+      "batch_size": 32,
+      "learning_rate": 0.001,
+      "patience": 8,
+      "val_share": 0.15
+    },
+    "session_gap_seconds": 60,
+    "cv_folds": 5,
+    "random_seed": 42
+  },
+  "artifact_limits": {
+    "peak_to_peak": 8385.038017811283,
+    "std": 809.1576906128413,
+    "flat_share": 0.1
+  },
+  "dl_input_shape": [
+    1,
+    4,
+    1000
+  ],
+  "class_names": [
+    "LEFT",
+    "RIGHT"
+  ],
+  "training_data": {
+    "trials": 1831,
+    "LEFT": 916,
+    "RIGHT": 915,
+    "sessions": 78
+  },
+  "cv": {
+    "CSP + SVM": {
+      "Accuracy": 0.509,
+      "Balanced Acc": 0.508,
+      "F1": 0.505,
+      "AUC": 0.504
+    },
+    "EEGNet": {
+      "Accuracy": 0.495,
+      "Balanced Acc": 0.496,
+      "F1": 0.497,
+      "AUC": 0.502
+    },
+    "CNN-LSTM": {
+      "Accuracy": 0.481,
+      "Balanced Acc": 0.479,
+      "F1": 0.457,
+      "AUC": 0.491
+    }
+  },
+  "best_model": "CSP + SVM",
+  "final_epochs": {
+    "EEGNet": 6,
+    "CNN-LSTM": 3
+  },
+  "warning": "Cross-validated performance is at chance level. EDA 3.4 found duplicated files with conflicting labels, so labels.csv does not reliably match the trial files. Predictions are not trustworthy until a label file that names each trial's file is provided."
+}
