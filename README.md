@@ -257,24 +257,6 @@ Then open http://localhost:8501.
 └── requirements.txt
 ```
 
----
-
-## Limitations
-
-| Limitation | Effect |
-|---|---|
-| Labels are not linked to files | No model result can be trusted until this is fixed |
-| Only 4 electrodes | CAR is weak; spatial filters have little to work with |
-| No cue marker in the files | A fixed 1–9 s window is used |
-| No subject IDs | CV groups by recording session instead of by subject |
-| Small held-out test set (344 trials) | The test score is noisy |
-
-## Next steps
-
-1. Get a label file that names each trial's file, then re-run the notebook. The app picks up new models with no code change.
-2. Validate the pipeline on data with trusted labels: BCI Competition IV 2b has C3/Cz/C4 at 250 Hz and the same LEFT vs RIGHT task.
-3. Add a shuffled-label test to `main_pipeline.ipynb` for every model.
-4. Export the models to ONNX so the app does not need PyTorch.
 
 ---
 
